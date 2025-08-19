@@ -26,7 +26,12 @@ form.cv-editor-form fieldset legend{
     font-weight: bold;
 }
 
-form.cv-editor-form fieldset input{
+form.cv-editor-form fieldset div.cv-editor-label-input-container{
+    width: 100%;
+}
+
+form.cv-editor-form fieldset input,
+form.cv-editor-form fieldset textarea{
     color: black;
     background-color: white;
 
@@ -37,16 +42,19 @@ form.cv-editor-form fieldset input{
     width: 100%;
     height: 3rem;
 
+    resize: vertical;
+
     /* box-sizing: content-box; */
 
     border: .2rem solid rgb(77, 77, 77);
     border-radius: .5rem;
 
-    box-shadow: 0 0 .5rem inset rgba(0, 0, 0, 0.6);
+    /* box-shadow: 0 0 .5rem inset rgba(0, 0, 0, 0.6); */
 
     padding-left: .5rem;
 }
 
-form.cv-editor-form fieldset input:focus-visible{
+form.cv-editor-form fieldset input:focus-visible,
+form.cv-editor-form fieldset textarea:focus-visible{
     border-color: rgb(49, 168, 204);
 }

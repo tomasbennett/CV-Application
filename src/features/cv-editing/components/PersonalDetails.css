@@ -1,0 +1,52 @@
+form.cv-editor-form{
+    width: 20rem;
+
+    padding: 2rem 1rem;
+
+    display: flex;
+
+    background-color: grey;
+
+    border-radius: 1rem;
+}
+
+form.cv-editor-form fieldset{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+}
+
+form.cv-editor-form fieldset legend{
+    font-size: large;
+
+    font-weight: bold;
+}
+
+form.cv-editor-form fieldset input{
+    color: black;
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    height: 3rem;
+
+    /* box-sizing: content-box; */
+
+    border: .2rem solid rgb(77, 77, 77);
+    border-radius: .5rem;
+
+    box-shadow: 0 0 .5rem inset rgba(0, 0, 0, 0.6);
+
+    padding-left: .5rem;
+}
+
+form.cv-editor-form fieldset input:focus-visible{
+    border-color: rgb(49, 168, 204);
+}

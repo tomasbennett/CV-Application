@@ -1,0 +1,38 @@
+section.cv-container{
+    aspect-ratio: 8.5 / 11;
+
+    width: 70rem;
+
+    display: grid;
+    
+
+    background-color: white;
+
+    box-shadow: 0 0 2rem black;
+}
+
+section.cv-container[data-header-layout-position="top"]{
+    grid-template-areas: "header"
+                         "main";
+
+    grid-template-rows: 22rem 
+                        1fr;
+
+    grid-template-columns: 1fr;
+}
+
+section.cv-container[data-header-layout-position="left"]{
+    grid-template-areas: "header main";
+
+    grid-template-rows: 1fr;
+
+    grid-template-columns: 25rem 1fr;
+}
+
+section.cv-container[data-header-layout-position="right"]{
+    grid-template-areas: "main header";
+
+    grid-template-rows: 1fr;
+
+    grid-template-columns: 1fr 25rem;
+}

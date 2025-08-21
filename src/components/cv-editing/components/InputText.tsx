@@ -5,6 +5,7 @@ export type InputTextProps = {
     id: string;
     name: string;
     placeholder?: string;
+    value?: string;
 };
 
 
@@ -14,6 +15,7 @@ export function CVInputContainer({
     id,
     name,
     placeholder = "",
+    value,
     children
 }: InputTextProps & {
     label: string;
@@ -22,7 +24,7 @@ export function CVInputContainer({
     return (
         <div className={`cv-editor-label-input-container label-input-container-${type ?? children.type.toString()}`}>
             <label htmlFor={id}>{label}</label>
-            {children ? (React.cloneElement(children, { type, id, name, placeholder })) : null}
+            {children ? (React.cloneElement(children, { type, id, name, placeholder, value })) : null}
         </div>
     );
 }

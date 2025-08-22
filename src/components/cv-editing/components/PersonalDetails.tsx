@@ -2,13 +2,16 @@ import React from "react"
 import "./PersonalDetails.css"
 import { CVInputContainer } from "./InputText"
 import { IPersonalDetails } from "../../../models/FormData";
+import { IFormContextType } from "../../../context/CVHeaderContext";
+import { FormCollapsableLegendMemo } from "./FormCollapsable";
 
-export function PersonalDetailsForm({ curr, setState }: { curr: IPersonalDetails, setState: (curr: IPersonalDetails) => void }) {
+export function PersonalDetailsForm({ curr, setState }: IFormContextType) {
     return (
         <>
             <form method="dialog" className="cv-editor-form">
                 <fieldset>
-                    <legend>Personal Details</legend>
+                    <FormCollapsableLegendMemo legendText={"Personal Details"} />
+
 
                     <CVInputContainer value={curr.fullName} placeholder={"Full Name..."} type={"text"} id={"full-name"} name={"full-name"} label={"Full Name"} >
                         <input onChange={(e) => { setState({ ...curr, fullName: e.target.value }); }} />

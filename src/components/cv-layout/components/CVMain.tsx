@@ -1,3 +1,4 @@
+import React from "react";
 import "./MainCV.css"
 
 export function CVMain() {
@@ -9,3 +10,5 @@ export function CVMain() {
         </>
     )
 }
+
+export const CVMemoMain = React.memo(CVMain);

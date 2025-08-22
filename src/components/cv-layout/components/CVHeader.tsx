@@ -1,8 +1,12 @@
+import { use, useContext } from "react"
 import { IPersonalDetails } from "../../../models/FormData"
 import "./HeaderCV.css"
+import { CVHeaderContext } from "../../../context/CVHeaderContext";
 
-export function CVHeader({ curr }: { curr: IPersonalDetails }) {
-    
+export function CVHeader() {
+    const curr: IPersonalDetails | null = useContext(CVHeaderContext);
+    if (curr === null) { return null; }
+
     return (
         <>
             <header className="cv-header">

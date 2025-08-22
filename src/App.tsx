@@ -1,9 +1,10 @@
 import { PersonalDetailsForm } from './components/cv-editing/components/PersonalDetails'
 
 import "./App.css"
-import { CV } from './components/cv-layout/components/CVContainer'
+import { CVMemo } from './components/cv-layout/components/CVContainer'
 import { useState } from 'react'
 import { IPersonalDetails } from './models/FormData'
+import { CVHeaderContext } from './context/CVHeaderContext'
 
 const originalFormData: IPersonalDetails = {
   fullName: "Tomas Bennett",
@@ -17,8 +18,11 @@ function App() {
 
   return (
     <>
-      <CV curr={curr} />
-      <PersonalDetailsForm curr={curr} setState={setState} />
+      <CVHeaderContext.Provider value={ curr }>
+        <CVMemo />
+      </CVHeaderContext.Provider>
+
+      <PersonalDetailsForm { ...{curr, setState} } />
     </>
   )
 }

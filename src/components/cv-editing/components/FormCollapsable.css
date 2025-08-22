@@ -1,0 +1,74 @@
+div.form-title-container{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.form-title-container div.collapsable-legend-arrow{
+    flex-shrink: 0;
+
+    /* box-sizing: content-box; */
+
+    width: 3.5rem;
+    aspect-ratio: 1/1;
+
+    object-fit: contain;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    border-radius: .6rem;
+
+    transform-origin: center;
+
+    /* transition: transform .2s ease-in-out; */
+
+    --open-close-timing: .2s;
+}
+
+div.form-title-container div.collapsable-legend-arrow:hover{
+    outline: .2rem solid white;
+}
+
+div.form-title-container div.collapsable-legend-arrow[data-open="true"]{
+    transform: rotate(0deg);
+}
+
+div.form-title-container div.collapsable-legend-arrow[data-open="false"]{
+    transform: rotate(180deg);
+}
+
+div.form-title-container div.collapsable-legend-arrow[data-open="opening"]{
+    animation: opening var(--open-close-timing) ease-in-out forwards;
+}
+
+div.form-title-container div.collapsable-legend-arrow[data-open="closing"]{
+    animation: closing var(--open-close-timing) ease-in-out forwards;
+}
+
+div.form-title-container div.collapsable-legend-arrow img{
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+@keyframes closing {
+    from {
+        transform: rotate(180deg);
+    } to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes opening {
+    from {
+        transform: rotate(0deg);
+    } to {
+        transform: rotate(180deg);
+    }
+    
+}

@@ -16,13 +16,15 @@ const originalFormData: IPersonalDetails = {
 function App() {
   const [curr, setState]: [IPersonalDetails, (curr: IPersonalDetails) => void] = useState<IPersonalDetails>(originalFormData);
 
+  
+
   return (
     <>
       <CVHeaderContext.Provider value={ curr }>
         <CVMemo />
       </CVHeaderContext.Provider>
 
-      <PersonalDetailsForm { ...{curr, setState} } />
+      <PersonalDetailsForm { ...{curr, setState } } isOpenInitial={"open"}  />
     </>
   )
 }

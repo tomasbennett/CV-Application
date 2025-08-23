@@ -1,0 +1,1 @@
+export type IFormCollapsableProps = "open" | "closed" | "opening" | "closing";

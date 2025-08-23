@@ -33,19 +33,19 @@ div.form-title-container div.collapsable-legend-arrow:hover{
     outline: .2rem solid white;
 }
 
-div.form-title-container div.collapsable-legend-arrow[data-open="true"]{
+form[data-open="open"] div.form-title-container div.collapsable-legend-arrow{
     transform: rotate(0deg);
 }
 
-div.form-title-container div.collapsable-legend-arrow[data-open="false"]{
+form[data-open="closed"] div.form-title-container div.collapsable-legend-arrow{
     transform: rotate(180deg);
 }
 
-div.form-title-container div.collapsable-legend-arrow[data-open="opening"]{
+form[data-open="opening"] div.form-title-container div.collapsable-legend-arrow img{
     animation: opening var(--open-close-timing) ease-in-out forwards;
 }
 
-div.form-title-container div.collapsable-legend-arrow[data-open="closing"]{
+form[data-open="closing"] div.form-title-container div.collapsable-legend-arrow img{
     animation: closing var(--open-close-timing) ease-in-out forwards;
 }
 
@@ -58,17 +58,17 @@ div.form-title-container div.collapsable-legend-arrow img{
 
 @keyframes closing {
     from {
-        transform: rotate(180deg);
-    } to {
         transform: rotate(0deg);
+    } to {
+        transform: rotate(180deg);
     }
 }
 
 @keyframes opening {
     from {
-        transform: rotate(0deg);
-    } to {
         transform: rotate(180deg);
+    } to {
+        transform: rotate(0deg);
     }
     
 }

@@ -4,8 +4,10 @@ import "./HeaderCV.css"
 import { CVHeaderContext } from "../../../context/CVHeaderContext";
 
 export function CVHeader() {
-    const curr: IPersonalDetails | null = useContext(CVHeaderContext);
-    if (curr === null) { return null; }
+    const ctx: { curr: IPersonalDetails } | null = useContext(CVHeaderContext);
+    if (ctx === null || ctx.curr === null) { return null; }
+
+    const { curr } = ctx;
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { Dispatch, SetStateAction, createContext } from 'react';
 import { IPersonalDetails } from '../models/FormData';
 
 export interface IFormContextType {
@@ -6,4 +6,4 @@ export interface IFormContextType {
     setState: (curr: IPersonalDetails) => void;
 }
 
-export const CVHeaderContext = createContext<IPersonalDetails | null>(null);
+export const CVHeaderContext = createContext<{ curr: IPersonalDetails, setState: Dispatch<SetStateAction<IPersonalDetails>>} | null>(null);

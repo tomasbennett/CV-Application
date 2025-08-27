@@ -5,13 +5,13 @@ import "./FormCollapsable.css";
 import { IFormCollapsableProps } from "../../../models/Collapsable";
 
 
-type FormCollapsableLegendProps = {
+type IFormCollapsableLegendProps = {
     legendText: string;
     setOpenState: () => void;
 };
 
 
-export function FormCollapsableLegend({ legendText, setOpenState }: FormCollapsableLegendProps) {
+export function FormCollapsableLegend({ legendText, setOpenState }: IFormCollapsableLegendProps) {
     return (
         <>
             <div className="form-title-container">

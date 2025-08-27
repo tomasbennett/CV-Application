@@ -8,7 +8,7 @@ import { useOpenForm } from "../../../hooks/useOpenForm";
 
 
 
-export function PersonalDetailsForm({ children, isOpenInitial }: { children: ReactNode; isOpenInitial: IFormCollapsableProps }) {
+export function EditFormContainer({ children, isOpenInitial, legendText }: { children: ReactNode; isOpenInitial: IFormCollapsableProps; legendText: string }) {
     const { isOpen, handleOpenStateChange } = useOpenForm(isOpenInitial);
     // So: What we want to do is whenever the isOpen state is either "open" or "opening" we want isMounted to be true immediately
     //HOWEVER, when isOpen is "closed" or "closing" we want to wait until the animation is done before setting isMounted to false
@@ -20,6 +20,7 @@ export function PersonalDetailsForm({ children, isOpenInitial }: { children: Rea
                 className="cv-editor-form"
                 data-open={isOpen}>
                 <fieldset>
+                    <FormCollapsableLegendMemo setOpenState={handleOpenStateChange} legendText={legendText} />
                     { children }
                 </fieldset>
             </form>

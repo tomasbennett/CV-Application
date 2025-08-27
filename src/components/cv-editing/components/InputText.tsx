@@ -1,5 +1,8 @@
 import React, { HTMLInputTypeAttribute } from "react";
 
+import "./InputText.css";
+
+
 export type InputTextProps = {
     type?: HTMLInputTypeAttribute;
     id: string;
@@ -24,8 +27,10 @@ export function CVInputContainer({
 
     return (
         <div className={`cv-editor-label-input-container label-input-container-${type ?? children.type.toString()}`}>
-            <label htmlFor={id}>{label}</label>
-            {children ? (React.cloneElement(children, { type, id, name, placeholder, value })) : null}
+            {/* <div className="input-animation-wrapper"> */}
+                <label htmlFor={id}>{label}</label>
+                {children ? (React.cloneElement(children, { type, id, name, placeholder, value })) : null}
+            {/* </div> */}
         </div>
     );
 }

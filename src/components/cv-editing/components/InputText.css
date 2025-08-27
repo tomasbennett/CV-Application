@@ -1,0 +1,57 @@
+
+
+div.cv-editor-label-input-container{
+    --animation-move-timing: .6s;
+
+    position: relative;
+}
+
+
+form[data-open="open"] div.cv-editor-label-input-container{
+    animation: move-down var(--animation-move-timing) ease-in-out forwards;
+}
+
+form[data-open="opening"] div.cv-editor-label-input-container{
+    animation: move-down var(--animation-move-timing) ease-in-out forwards;
+}
+
+form[data-open="closing"] div.cv-editor-label-input-container{
+    animation: move-up var(--animation-move-timing) ease-in-out forwards;
+}
+
+
+
+
+/* div.form.cv-editor-form fieldset div.cv-editor-label-input-container{
+    position: relative;
+}
+
+div.cv-editor-label-input-container div.input-animation-wrapper{
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+@keyframes move-up {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-2rem);
+        opacity: 0;
+    }
+}
+
+@keyframes move-down {
+    0% {
+        transform: translateY(-2rem);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

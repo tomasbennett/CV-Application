@@ -4,6 +4,8 @@ div.form-title-container{
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    z-index: 1;
 }
 
 div.form-title-container div.collapsable-legend-arrow{

@@ -1,23 +1,27 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./PersonalDetails.css"
 import { CVInputContainerMemo } from "./InputText"
 import { IFormContextType } from "../../../context/CVHeaderContext";
 import { FormCollapsableLegendMemo } from "./FormCollapsable";
 import { IFormCollapsableProps } from "../../../models/Collapsable";
+import { useOpenForm } from "../../../hooks/useOpenForm";
 
 
 
 export function PersonalDetailsForm({ curr, setState, isOpenInitial }: IFormContextType & { isOpenInitial: IFormCollapsableProps }) {
-    const [isOpen, setIsOpen] = React.useState<IFormCollapsableProps>(isOpenInitial);
+    const { isOpen, handleOpenStateChange } = useOpenForm(isOpenInitial);
+
+    // So: What we want to do is whenever the isOpen state is either "open" or "opening" we want isMounted to be true immediately
+    //HOWEVER, when isOpen is "closed" or "closing" we want to wait until the animation is done before setting isMounted to false
 
     return (
         <>
-            <form method="dialog"
+            <form
+                method="dialog"
                 className="cv-editor-form"
                 data-open={isOpen}>
                 <fieldset>
-                    <FormCollapsableLegendMemo setOpenState={setIsOpen} legendText={"Personal Details"} />
-
+                    <FormCollapsableLegendMemo setOpenState={handleOpenStateChange} legendText={"Personal Details"} />
 
                     <CVInputContainerMemo value={curr.fullName} placeholder={"Full Name..."} type={"text"} id={"full-name"} name={"full-name"} label={"Full Name"} >
                         <input onChange={(e) => { setState({ ...curr, fullName: e.target.value }); }} />

@@ -7,17 +7,19 @@ import { IFormCollapsableProps } from "../../../models/Collapsable";
 
 type FormCollapsableLegendProps = {
     legendText: string;
-    setOpenState: React.Dispatch<React.SetStateAction<IFormCollapsableProps>>;
+    setOpenState: () => void;
 };
 
 
-export function FormCollapsableLegend({ legendText, setOpenState }: FormCollapsableLegendProps) {    
+export function FormCollapsableLegend({ legendText, setOpenState }: FormCollapsableLegendProps) {
     return (
         <>
             <div className="form-title-container">
-                <legend>{ legendText }</legend>
-                <div onClick={() => {setOpenState(prev => (prev === "open" || prev === "opening") ? "closing" : "opening")}} className="collapsable-legend-arrow">
-                    <img src={ arrowSVG } alt="collapsable-arrow" />
+                <legend>{legendText}</legend>
+                <div
+                    onClick={setOpenState}
+                    className="collapsable-legend-arrow">
+                    <img src={arrowSVG} alt="collapsable-arrow" />
                 </div>
             </div>
         </>

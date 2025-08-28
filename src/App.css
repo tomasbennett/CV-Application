@@ -1,12 +1,14 @@
 div#root{
   --root-padding: 2rem 3rem;
-  --root-bcg: rgb(51, 51, 51);
+  --root-bcg: linear-gradient(to bottom right, 
+    rgb(109, 109, 109), 
+    rgb(37, 37, 37));
 
   width: 100%;
   height: 100%;
   min-height: fit-content;
 
-  background-color: var(--root-bcg);
+  background: var(--root-bcg);
 
   display: flex;
   flex-wrap: nowrap;

@@ -1,7 +1,6 @@
 
 
 div.cv-editor-label-input-container{
-    --animation-move-timing: .6s;
     --transform-height: -2rem;
 
     position: relative;

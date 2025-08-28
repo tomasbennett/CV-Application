@@ -2,7 +2,6 @@ import React from "react";
 import arrowSVG from "../../../assets/open-arrow.svg";
 
 import "./FormCollapsable.css";
-import { IFormCollapsableProps } from "../../../models/Collapsable";
 
 
 type IFormCollapsableLegendProps = {
@@ -19,7 +18,9 @@ export function FormCollapsableLegend({ legendText, setOpenState }: IFormCollaps
                 <div
                     onClick={setOpenState}
                     className="collapsable-legend-arrow">
-                    <img src={arrowSVG} alt="collapsable-arrow" />
+                    <img onAnimationEnd={
+                        setOpenState
+                    } src={arrowSVG} alt="collapsable-arrow" />
                 </div>
             </div>
         </>

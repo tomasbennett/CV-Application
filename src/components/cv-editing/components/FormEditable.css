@@ -24,6 +24,8 @@ form.cv-editor-form{
     border-radius: 1rem;
 
     overflow: hidden;
+
+    /* transition: height .4s ease-in-out; */
 }
 
 /* form.cv-editor-form[data-open="closed"] fieldset > *:not(.form-title-container){
@@ -36,6 +38,8 @@ form.cv-editor-form{
 
 
 form.cv-editor-form fieldset{
+    --animation-move-timing: .4s;
+
     width: 100%;
     height: 100%;
 

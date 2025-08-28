@@ -21,7 +21,7 @@ export function EditFormContainer({ children, isOpenInitial, legendText }: { chi
                 data-open={isOpen}>
                 <fieldset>
                     <FormCollapsableLegendMemo setOpenState={handleOpenStateChange} legendText={legendText} />
-                    { children }
+                    { isOpen === "open" || isOpen === "opening" || isOpen === "closing" ? children : null }
                 </fieldset>
             </form>
         </>

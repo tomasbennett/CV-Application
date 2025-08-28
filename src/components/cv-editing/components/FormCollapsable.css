@@ -28,7 +28,7 @@ div.form-title-container div.collapsable-legend-arrow{
 
     /* transition: transform .2s ease-in-out; */
 
-    --open-close-timing: .2s;
+    /* --animation-move-timing: .2s; */
 }
 
 div.form-title-container div.collapsable-legend-arrow:hover{
@@ -44,11 +44,11 @@ form[data-open="closed"] div.form-title-container div.collapsable-legend-arrow{
 }
 
 form[data-open="opening"] div.form-title-container div.collapsable-legend-arrow img{
-    animation: opening var(--open-close-timing) ease-in-out forwards;
+    animation: opening var(--animation-move-timing) ease-in-out forwards;
 }
 
 form[data-open="closing"] div.form-title-container div.collapsable-legend-arrow img{
-    animation: closing var(--open-close-timing) ease-in-out forwards;
+    animation: closing var(--animation-move-timing) ease-in-out forwards;
 }
 
 div.form-title-container div.collapsable-legend-arrow img{

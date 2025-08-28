@@ -7,11 +7,28 @@ export function useOpenForm(isOpenInitial: IFormCollapsableProps): { isOpen: IFo
     const [isOpen, setIsOpen] = React.useState<IFormCollapsableProps>(isOpenInitial);
 
     const handleOpenStateChange = () => {
-        if (isOpen === "open" || isOpen === "opening") {
-            setIsOpen("closing");
-            return;
-        }
-        setIsOpen("opening");
+        // if (isOpen === "open" || isOpen === "opening") {
+        //     setIsOpen("closing");
+        //     return;
+        // }
+        // setIsOpen("opening");
+
+        setIsOpen(prev => {
+            if (prev === "opening") {
+                return "open";
+            }
+            else if (prev === "closing") {
+                return "closed";
+            }
+            else if (prev === "open") {
+                return "closing";
+            }
+            else if (prev === "closed") {
+                return "opening";
+            }
+
+            return prev;
+        });
 
     }
 

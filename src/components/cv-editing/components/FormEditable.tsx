@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from "react"
-import "./PersonalDetails.css"
+import "./FormEditable.css"
 import { CVInputContainerMemo } from "./InputText"
 import { IFormContextType } from "../../../context/CVHeaderContext";
 import { FormCollapsableLegendMemo } from "./FormCollapsable";

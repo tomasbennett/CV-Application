@@ -1,13 +1,13 @@
 import { use, useContext } from "react"
-import { IPersonalDetails } from "../../../models/FormData"
+import { IFormData, IPersonalDetails } from "../../../models/FormData"
 import "./HeaderCV.css"
 import { CVHeaderContext } from "../../../context/CVHeaderContext";
 
 export function CVHeader() {
-    const ctx: { curr: IPersonalDetails } | null = useContext(CVHeaderContext);
-    if (ctx === null || ctx.curr === null) { return null; }
+    const ctx: { curr: IFormData } | null = useContext(CVHeaderContext);
+    if (!(ctx?.curr?.personalDetails)) { return null; }
 
-    const { curr } = ctx;
+    const curr: IPersonalDetails = ctx.curr.personalDetails;
 
     return (
         <>

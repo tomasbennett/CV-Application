@@ -1,17 +1,15 @@
-import { PersonalDetailsForm } from './components/cv-editing/components/PersonalDetails'
-
 import "./App.css"
 import { CVLayoutMemo } from './components/cv-layout'
 import { Dispatch, SetStateAction, useMemo, useState } from 'react'
-import { IPersonalDetails } from './models/FormData'
+import { IFormData } from './models/FormData'
 import { CVHeaderContext } from './context/CVHeaderContext'
 import { EditForms } from './components/cv-editing'
-import { defaultPersonalFormData } from './constants'
+import { defaultEditFormData, defaultPersonalFormData } from './constants'
 
 //ERROR: WHENEVER A CHANGE HAS BEEN MADE IN ONE INPUT, MAKING A CHANGE IN ANOTHER INPUT RESETS THE ORIGNAL INPUT
 
 function App() {
-  const [curr, setState]: [IPersonalDetails, Dispatch<SetStateAction<IPersonalDetails>>]  = useState<IPersonalDetails>(defaultPersonalFormData);
+  const [curr, setState]: [IFormData, Dispatch<SetStateAction<IFormData>>]  = useState<IFormData>(defaultEditFormData);
 
   const value = useMemo(() => ({ curr, setState }), [curr]);
 

@@ -5,21 +5,24 @@ export type IPersonalDetails = {
     address: string;
 };
 
+export type IProfessionalSummary = {
+    profileSummary: string;
+};
 
 
 export type IFormData = {
     personalDetails: IPersonalDetails;
-    education: {
+    professionalSummary: IProfessionalSummary;
+    education?: {
         institution: string;
         degree: string;
         startDate: string;
         endDate: string;
     }[];
-    workExperience: {
+    workExperience?: {
         companyName: string;
         jobTitle: string;
         startDate: string;
         endDate: string;
     }[];
-    skills: string[];
 };

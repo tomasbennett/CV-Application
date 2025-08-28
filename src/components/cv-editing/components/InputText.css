@@ -2,6 +2,7 @@
 
 div.cv-editor-label-input-container{
     --animation-move-timing: .6s;
+    --transform-height: -2rem;
 
     position: relative;
 }
@@ -9,6 +10,12 @@ div.cv-editor-label-input-container{
 
 form[data-open="open"] div.cv-editor-label-input-container{
     animation: move-down var(--animation-move-timing) ease-in-out forwards;
+}
+
+form[data-open="closed"] div.cv-editor-label-input-container{
+    transform: translateY(var(--transform-height));
+
+    opacity: 0;
 }
 
 form[data-open="opening"] div.cv-editor-label-input-container{
@@ -40,14 +47,14 @@ div.cv-editor-label-input-container div.input-animation-wrapper{
         opacity: 1;
     }
     100% {
-        transform: translateY(-2rem);
+        transform: translateY(var(--transform-height));
         opacity: 0;
     }
 }
 
 @keyframes move-down {
     0% {
-        transform: translateY(-2rem);
+        transform: translateY(var(--transform-height));
         opacity: 0;
     }
     100% {

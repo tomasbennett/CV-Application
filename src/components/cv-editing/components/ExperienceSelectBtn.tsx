@@ -5,7 +5,7 @@ import "./ExperienceSelect.css";
 
 type IExperienceSelect = {
     btnTitle: string;
-    onclick?: MouseEventHandler<HTMLButtonElement>;
+    onclick?: MouseEventHandler<HTMLDivElement>;
 };
 
 export function ExperienceSelectBtn({
@@ -13,13 +13,13 @@ export function ExperienceSelectBtn({
     onclick
  }: IExperienceSelect) {
     return (
-        <button
+        <div
+            role="button"
             onClick={onclick}
-            type="button"
             className="page-change-btn experience-select-btn cv-editor-label-input-container">
             <span className="experience-title">{btnTitle}</span>
             
             <DeleteBtn />
-        </button>
+        </div>
     );
 }

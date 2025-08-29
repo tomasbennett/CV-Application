@@ -1,5 +1,7 @@
 import { MouseEventHandler } from 'react';
 
+import "./FormUtilBtns.css";
+
 type IDeleteBtnProps = {
     onclick?: MouseEventHandler<HTMLButtonElement>;
 };

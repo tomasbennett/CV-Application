@@ -24,9 +24,11 @@ form.cv-editor-form{
 
     --form-padding-height: 2rem;
 
+    --form-padding-left-right: 1rem;
+
     width: 100%;
 
-    padding: var(--form-padding-height) 1rem;
+    padding: var(--form-padding-height) var(--form-padding-left-right);
 
     display: flex;
 

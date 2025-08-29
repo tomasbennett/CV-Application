@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./MainCV.css"
-import { IFormData, IProfessionalSummary } from "../../../models/FormData";
+import { IEducation, IFormData, IProfessionalSummary, IWorkExperience } from "../../../models/FormData";
 import { CVHeaderContext } from "../../../context/CVHeaderContext";
 
 export function CVMain() {
@@ -9,7 +9,9 @@ export function CVMain() {
     if (!ctx?.curr) { return null; }
 
     const professionalSummary: IProfessionalSummary = ctx.curr.professionalSummary;
-
+    
+    const educationSummary: IEducation[] = ctx.curr.education;
+    const workExperienceSummary: IWorkExperience[] = ctx.curr.workExperience;
 
     return (
         <>
@@ -20,24 +22,50 @@ export function CVMain() {
                         <p>{ professionalSummary.profileSummary }</p>
                     </div>
                 </section>
-                <section className="cv-main-section">
+
+                {educationSummary.length > 0 ?
+                    (<section className="cv-main-section">
+                        <h2 className="cv-main-section-title">Education</h2>
+                        <div className="cv-main-section-content">
+                            {educationSummary.map((edu: IEducation) => (
+                                <div key={edu.id} className="cv-education-entry">
+                                    <h3>{edu.degree}</h3>
+                                    <p>{edu.institution} | {edu.dates.startDate.toLocaleString()} - {edu.dates.endDate.toLocaleString()}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>)
+                : null}
+
+                {/* <section className="cv-main-section">
                     <h2 className="cv-main-section-title">Education</h2>
                     <div className="cv-main-section-content">
                         <p>Detail your educational background here.</p>
                     </div>
-                </section>
-                <section className="cv-main-section">
-                    <h2 className="cv-main-section-title">Skills</h2>
-                    <div className="cv-main-section-content">
-                        <p>List your skills here.</p>
-                    </div>
-                </section>
-                <section className="cv-main-section">
-                    <h2 className="cv-main-section-title">Projects</h2>
+                </section> */}
+
+                {workExperienceSummary.length > 0 ? 
+                    (<section className="cv-main-section">
+                        <h2 className="cv-main-section-title">Work Experience</h2>
+                        <div className="cv-main-section-content">
+                            {workExperienceSummary.map((work: IWorkExperience) => (
+                                <div key={work.id} className="cv-work-entry">
+                                    <h3>{work.jobTitle}</h3>
+                                    <p>{work.companyName} | {work.dates.startDate.toLocaleString()} - {work.dates.endDate.toLocaleString()}</p>
+                                    <p>{work.jobDescription}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>) 
+                : null}
+
+                {/* <section className="cv-main-section">
+                    <h2 className="cv-main-section-title">Work Experience</h2>
                     <div className="cv-main-section-content">
                         <p>Describe your projects here.</p>
                     </div>
-                </section>
+                </section> */}
+
             </main>
         </>
     )

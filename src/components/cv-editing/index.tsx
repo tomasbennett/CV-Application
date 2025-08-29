@@ -4,6 +4,7 @@ import { EditFormContainer } from "./components/FormEditable";
 import { CVInputContainerMemo } from "./components/InputText"
 import { CVHeaderContext } from "../../context/CVHeaderContext";
 import { ExperienceSelectBtn } from "./components/ExperienceSelectBtn";
+import { AddExperienceBtn } from "./components/AddExperience";
 
 
 export function EditForms() {
@@ -71,6 +72,7 @@ export function PersonalInfoForm() {
                         </React.Fragment>
                     ))}
                 </div>
+                <AddExperienceBtn experience="Education" />
             </EditFormContainer>
 
             <EditFormContainer legendText="Work Experience" isOpenInitial={"closed"}>
@@ -80,9 +82,11 @@ export function PersonalInfoForm() {
 
                             <ExperienceSelectBtn btnTitle={work.companyName} />
 
+
                         </React.Fragment>
                     ))}
                 </div>
+                <AddExperienceBtn experience="Job" />
             </EditFormContainer>
 
         </div>

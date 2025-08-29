@@ -3,7 +3,9 @@ section.cv-container{
 
     aspect-ratio: 8.5 / 11;
 
-    width: 70rem;
+    max-width: 70rem;
+
+    max-height: 100%;
 
     display: grid;
     

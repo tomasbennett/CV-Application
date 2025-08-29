@@ -35,3 +35,7 @@ body {
 
   min-height: fit-content;
 }
+
+button{
+  background-color: inherit;
+}

@@ -1,4 +1,6 @@
 section.cv-container{
+    flex: 1;
+
     aspect-ratio: 8.5 / 11;
 
     width: 70rem;
@@ -9,13 +11,15 @@ section.cv-container{
     background-color: white;
 
     box-shadow: 0 0 2rem black;
+
+    align-self: flex-start;
 }
 
 section.cv-container[data-header-layout-position="top"]{
     grid-template-areas: "header"
                          "main";
 
-    grid-template-rows: 22rem 
+    grid-template-rows: 16rem 
                         1fr;
 
     grid-template-columns: 1fr;

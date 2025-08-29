@@ -1,27 +1,27 @@
 
 
-div.cv-editor-label-input-container{
+.cv-editor-label-input-container{
     --transform-height: -2rem;
 
     position: relative;
 }
 
 
-form[data-open="open"] div.cv-editor-label-input-container{
+form[data-open="open"] .cv-editor-label-input-container{
     animation: move-down var(--animation-move-timing) ease-in-out forwards;
 }
 
-form[data-open="closed"] div.cv-editor-label-input-container{
+form[data-open="closed"] .cv-editor-label-input-container{
     transform: translateY(var(--transform-height));
 
     opacity: 0;
 }
 
-form[data-open="opening"] div.cv-editor-label-input-container{
+form[data-open="opening"] .cv-editor-label-input-container{
     animation: move-down var(--animation-move-timing) ease-in-out forwards;
 }
 
-form[data-open="closing"] div.cv-editor-label-input-container{
+form[data-open="closing"] .cv-editor-label-input-container{
     animation: move-up var(--animation-move-timing) ease-in-out forwards;
 }
 

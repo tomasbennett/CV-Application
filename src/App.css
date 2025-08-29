@@ -1,5 +1,5 @@
 div#root{
-  --root-padding: 2rem 3rem;
+  --root-padding: 2rem 2rem;
   --root-bcg: linear-gradient(to bottom right, 
     rgb(109, 109, 109), 
     rgb(37, 37, 37));

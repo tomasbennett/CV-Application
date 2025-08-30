@@ -21,3 +21,5 @@ export const dateRangeSchema = z.object({
         path: ["startDate"]
     }
 );
+
+export type IDateRange = z.infer<typeof dateRangeSchema>;

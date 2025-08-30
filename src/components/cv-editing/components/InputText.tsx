@@ -5,7 +5,7 @@ import "./InputText.css";
 
 export type InputTextProps = {
     type?: HTMLInputTypeAttribute;
-    id: string;
+    id?: string;
     name: string;
     placeholder?: string;
     value?: string;

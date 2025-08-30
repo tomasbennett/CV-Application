@@ -30,3 +30,33 @@ button.delete-btn svg:hover{
 
     fill: red;
 }
+
+
+
+div.form-util-btns-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1.5rem;
+
+    width: 100%;
+
+    margin-top: 1.5rem;
+}
+
+div.form-util-btns-container > button{
+    flex-shrink: 0;
+
+    padding: .8rem 1.5rem;
+
+    border-radius: .6rem;
+
+    font-size: 1.4rem;
+    font-weight: 600;
+
+    color: white;
+
+    background-color: #007bff;
+    border: none;
+}

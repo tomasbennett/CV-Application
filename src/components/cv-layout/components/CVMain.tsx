@@ -16,6 +16,7 @@ export function CVMain() {
     return (
         <>
             <main className="cv-main">
+                
                 <section className="cv-main-section">
                     <h2 className="cv-main-section-title">Professional Summary</h2>
                     <div className="cv-main-section-content">
@@ -37,13 +38,6 @@ export function CVMain() {
                     </section>)
                 : null}
 
-                {/* <section className="cv-main-section">
-                    <h2 className="cv-main-section-title">Education</h2>
-                    <div className="cv-main-section-content">
-                        <p>Detail your educational background here.</p>
-                    </div>
-                </section> */}
-
                 {workExperienceSummary.length > 0 ? 
                     (<section className="cv-main-section">
                         <h2 className="cv-main-section-title">Work Experience</h2>
@@ -58,13 +52,6 @@ export function CVMain() {
                         </div>
                     </section>) 
                 : null}
-
-                {/* <section className="cv-main-section">
-                    <h2 className="cv-main-section-title">Work Experience</h2>
-                    <div className="cv-main-section-content">
-                        <p>Describe your projects here.</p>
-                    </div>
-                </section> */}
 
             </main>
         </>

@@ -3,7 +3,7 @@ import { IFormCollapsableProps } from "../models/Collapsable";
 
 
 
-export function useOpenForm(isOpenInitial: IFormCollapsableProps): { isOpen: IFormCollapsableProps, handleOpenStateChange: () => void } {
+export function useOpenForm(isOpenInitial: IFormCollapsableProps): { isOpen: IFormCollapsableProps, handleOpenStateChange: () => void, handleSingleOpenStateChange: () => void } {
     const [isOpen, setIsOpen] = React.useState<IFormCollapsableProps>(isOpenInitial);
 
     const handleOpenStateChange = () => {
@@ -32,5 +32,10 @@ export function useOpenForm(isOpenInitial: IFormCollapsableProps): { isOpen: IFo
 
     }
 
-    return { isOpen, handleOpenStateChange };
+    const handleSingleOpenStateChange = () => {
+        setIsOpen(prev => (prev === "open" ? "closed" : "open"));
+    }
+
+
+    return { isOpen, handleOpenStateChange, handleSingleOpenStateChange };
 }

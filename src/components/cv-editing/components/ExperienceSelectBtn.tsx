@@ -9,11 +9,13 @@ import { IDateRange } from "../../../models/DateRange";
 type IExperienceSelect = {
     btnTitle: string;
     onclick?: MouseEventHandler<HTMLDivElement>;
+    delClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 export function ExperienceSelectBtn({
     btnTitle,
-    onclick
+    onclick,
+    delClick
 }: IExperienceSelect) {
     return (
         <div
@@ -22,7 +24,7 @@ export function ExperienceSelectBtn({
             className="page-change-btn experience-select-btn cv-editor-label-input-container">
             <span className="experience-title">{btnTitle}</span>
 
-            <DeleteBtn />
+            <DeleteBtn onClick={delClick}/>
         </div>
     );
 }
@@ -37,21 +39,21 @@ export function EducationExperienceForm({
         <div className="education-experience-container experience-select-container">
             
             <CVInputContainer
+                placeholder="Please enter the institution name"
                 label="Institution"
                 type="text"
                 id="institution"
-                name="institution"
-                value={institution}>
-                <input />
+                name="institution">
+                <input defaultValue={institution} />
             </CVInputContainer>
 
             <CVInputContainer
+                placeholder="Please enter the degree"
                 label="Degree"
                 type="text"
                 id="degree"
-                name="degree"
-                value={degree}>
-                <input />
+                name="degree">
+                <input defaultValue={degree} />
             </CVInputContainer>
 
             <DateFormInputs
@@ -75,29 +77,29 @@ export function WorkExperienceForm({
     return (
         <div className="work-experience-container">
             <CVInputContainer
+                placeholder="Please enter the company name"
                 label="Company Name"
                 type="text"
                 id="company-name"
-                name="company-name"
-                value={companyName}>
-                <input />
+                name="company-name">
+                <input defaultValue={companyName} />
             </CVInputContainer>
 
             <CVInputContainer
+                placeholder="Please enter the job title"
                 label="Job Title"
                 type="text"
                 id="job-title"
-                name="job-title"
-                value={jobTitle}>
-                <input />
+                name="job-title">
+                <input defaultValue={jobTitle} />
             </CVInputContainer>
 
             <CVInputContainer
+                placeholder="Please enter the job description"
                 label="Job Description"
                 id="job-description"
-                name="job-description"
-                value={jobDescription}>
-                <textarea />
+                name="job-description">
+                <textarea defaultValue={jobDescription} />
             </CVInputContainer>
 
             <DateFormInputs
@@ -121,18 +123,17 @@ function DateFormInputs({
                 label="Start Date"
                 type="date"
                 id={startDateID}
-                name="start-date"
-                value={dates.startDate.toDateString()}>
-                <input />
+                name="startDate"
+                >
+                <input defaultValue={dates.startDate.toISOString().split("T")[0]} />
             </CVInputContainer>
 
             <CVInputContainer
                 label="End Date"
                 type="date"
                 id={endDateID}
-                name="end-date"
-                value={typeof dates.endDate === "string" ? (new Date()).toDateString() : dates.endDate.toDateString()}>
-                <input />
+                name="endDate">
+                <input defaultValue={dates.endDate === "Present" ? (new Date()).toISOString().split("T")[0] : dates.endDate.toISOString().split("T")[0]} />
             </CVInputContainer>
 
         </div>

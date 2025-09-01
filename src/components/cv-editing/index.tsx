@@ -1,10 +1,14 @@
-import React, { Dispatch, SetStateAction, useContext } from "react";
-import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExperience } from "../../models/FormData";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
+import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExperience, educationSchema } from "../../models/FormData";
 import { EditFormContainer } from "./components/FormEditable";
 import { CVInputContainerMemo } from "./components/InputText"
 import { CVHeaderContext } from "../../context/CVHeaderContext";
-import { ExperienceSelectBtn } from "./components/ExperienceSelectBtn";
+import { EducationExperienceForm, ExperienceSelectBtn } from "./components/ExperienceSelectBtn";
 import { AddExperienceBtn } from "./components/AddExperience";
+import { useOpenForm } from "../../hooks/useOpenForm";
+import is from "zod/v4/locales/is.cjs";
+import { IFormCollapsableProps, IFormTogglable } from "../../models/Collapsable";
+import { FormUtilBtns } from "./components/FormUtilBtns";
 
 
 export function EditForms() {
@@ -20,6 +24,11 @@ export function EditForms() {
 
 
 
+type IHandleFormState = {
+    isOpen: IFormTogglable;
+    payload: Omit<IEducation, "id"> & { saveFunction: (formData: IEducation) => void } | null;
+}
+
 
 
 export function PersonalInfoForm() {
@@ -33,6 +42,15 @@ export function PersonalInfoForm() {
 
     const educationSummary: IEducation[] = curr.education;
     const workExperienceSummary: IWorkExperience[] = curr.workExperience;
+
+
+    const [handleFormCurr, setFormState] = useState<IHandleFormState>({
+        isOpen: "closed",
+        payload: null
+    });
+
+    const { isOpen } = handleFormCurr;
+
 
     return (
         <div className="edit-form-full-container">
@@ -62,17 +80,145 @@ export function PersonalInfoForm() {
 
             </EditFormContainer>
 
-            <EditFormContainer legendText="Education" isOpenInitial={"closed"}>
-                <div className="experience-selection-entries education-entries">
-                    {educationSummary.map((edu: IEducation) => (
-                        <React.Fragment key={edu.id}>
+            <EditFormContainer legendText="Education" isOpenInitial={"closed"} onSubmit={(e) => {
+                e.preventDefault();
 
-                            <ExperienceSelectBtn btnTitle={edu.institution} />
+                const formData = new FormData(e.currentTarget);
 
-                        </React.Fragment>
-                    ))}
-                </div>
-                <AddExperienceBtn experience="Education" />
+                const startDateValue = formData.get("startDate");
+                const endDateValue = formData.get("endDate");
+
+                const formObj: Partial<IEducation> = {
+                    institution: formData.get("institution")?.toString() ?? "",
+                    degree: formData.get("degree")?.toString() ?? "",
+                    dates: {
+                        startDate: typeof startDateValue === "string"
+                            ? new Date(startDateValue)
+                            : new Date("2020-01-01"),
+                        endDate: typeof endDateValue === "string"
+                            ? new Date(endDateValue)
+                            : "Present"
+                    }
+                };
+
+                const educationSchemaWithoutId = educationSchema.omit({ id: true });
+
+                if (educationSchemaWithoutId.safeParse(formObj).success) {
+                    handleFormCurr.payload?.saveFunction(formObj as IEducation);
+                    setFormState({
+                        isOpen: "closed",
+                        payload: null
+                    });
+
+                    return;
+
+                }
+
+            }}>
+
+                {isOpen === "closed" || handleFormCurr.payload === null ?
+                    <>
+                        <div className="experience-selection-entries education-entries">
+                            {educationSummary.map((edu: IEducation) => (
+                                <React.Fragment key={edu.id}>
+
+                                    <ExperienceSelectBtn
+                                        btnTitle={edu.institution}
+                                        onclick={() => {
+                                            setFormState({
+                                                isOpen: "open",
+                                                payload: {
+                                                    institution: edu.institution,
+                                                    degree: edu.degree,
+                                                    dates: edu.dates,
+                                                    saveFunction: (data: IEducation) => {
+                                                        // Here we want to update the existing education entry in the state
+                                                        setState((prev: IFormData) => {
+                                                            const updatedEducation = prev.education.map((e) => e.id === edu.id ?
+                                                                { ...e, institution: data.institution ?? edu.institution, degree: data.degree ?? edu.degree, dates: data.dates ?? edu.dates }
+                                                                : e);
+                                                            return { ...prev, education: updatedEducation };
+                                                        });
+                                                    }
+
+                                                }
+                                            });
+                                        }}
+                                        delClick={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+
+                                            setState((prev: IFormData) => {
+                                                const updatedEducation = prev.education.filter((ed) => ed.id !== edu.id);
+                                                return { ...prev, education: updatedEducation };
+                                            });
+                                        }} />
+
+                                </React.Fragment>
+                            ))}
+                        </div>
+                        <AddExperienceBtn
+                            experience="Education"
+                            onclick={() => {
+                                setFormState({
+                                    isOpen: "open",
+                                    payload: {
+                                        institution: "",
+                                        degree: "",
+                                        dates: {
+                                            startDate: new Date("01/01/2020"),
+                                            endDate: "Present"
+                                        },
+                                        saveFunction: (data: IEducation) => {
+                                            // Here we want to add the new education entry to the state
+                                            setState((prev: IFormData) => ({
+                                                ...prev,
+                                                education: [...prev.education, {
+                                                    id: crypto.randomUUID(),
+                                                    institution: data.institution ?? "",
+                                                    degree: data.degree ?? "",
+                                                    dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: "Present" }
+                                                }]
+                                            }));
+                                        }
+                                    }
+                                });
+                            }}
+                        />
+                    </>
+                    :
+                    <>
+                        <div className="full-selectable-form-container">
+                            <EducationExperienceForm
+                                degree={handleFormCurr.payload?.degree}
+                                institution={handleFormCurr.payload?.institution}
+                                dates={handleFormCurr.payload?.dates} />
+                            <FormUtilBtns
+                                // onSaveClick={(e) => {
+                                //     e.preventDefault();
+                                //     // Here we want to add the new education entry to the state
+
+                                //     handleFormCurr.payload?.saveFunction();
+
+                                //     setFormState({
+                                //         isOpen: "closed",
+                                //         payload: null
+                                //     });
+                                // }} 
+                                onCancelClick={(e) => {
+                                    e.preventDefault();
+
+                                    setFormState({
+                                        isOpen: "closed",
+                                        payload: null
+                                    });
+                                }}
+                            />
+                        </div>
+
+                    </>
+                }
+
             </EditFormContainer>
 
             <EditFormContainer legendText="Work Experience" isOpenInitial={"closed"}>
@@ -80,7 +226,15 @@ export function PersonalInfoForm() {
                     {workExperienceSummary.map((work: IWorkExperience) => (
                         <React.Fragment key={work.id}>
 
-                            <ExperienceSelectBtn btnTitle={work.companyName} />
+                            <ExperienceSelectBtn btnTitle={work.companyName} onclick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                setState((prev: IFormData) => {
+                                    const updatedWork = prev.workExperience.filter((w) => w.id !== work.id);
+                                    return { ...prev, workExperience: updatedWork };
+                                });
+                            }} />
 
 
                         </React.Fragment>

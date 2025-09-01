@@ -14,14 +14,14 @@ export type IProfessionalSummary = {
 };
 
 
-const educationSchema = z.object({
+export const educationSchema = z.object({
     id: z.string().uuid(),
     institution: z.string().min(1, "Institution name is required"),
     degree: z.string().min(1, "Degree is required"),
     dates: dateRangeSchema
 });
 
-const workExperienceSchema = z.object({
+export const workExperienceSchema = z.object({
     id: z.string().uuid(),
     companyName: z.string().min(1, "Company name is required"),
     jobTitle: z.string().min(1, "Job title is required"),

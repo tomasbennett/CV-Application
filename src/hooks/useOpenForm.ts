@@ -33,7 +33,7 @@ export function useOpenForm(isOpenInitial: IFormCollapsableProps): { isOpen: IFo
     }
 
     const handleSingleOpenStateChange = () => {
-        setIsOpen(prev => (prev === "open" ? "closed" : "open"));
+        setIsOpen(prev => (prev === "open" || prev === "opening" ? "closed" : "open"));
     }
 
 

@@ -2,6 +2,9 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   font-size: 62.5%;
+
+  --primary-button-background-colour: #007bff;
+  --primary-button-background-colour-hover: #0056b3;
 }
 
 *,

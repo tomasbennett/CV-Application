@@ -42,7 +42,7 @@ type FormUtilBtnsProps = {
 
 export function FormUtilBtns({ onSaveClick, onCancelClick }: FormUtilBtnsProps) {
     return (
-        <div className="form-util-btns-container">
+        <div className="cv-editor-label-input-container form-util-btns-container">
             <SaveBtn onClick={onSaveClick} />
             <CancelBtn onClick={onCancelClick} />
         </div>

@@ -1,0 +1,18 @@
+export type ICVHeader = "Top" | "Left" | "Right";
+
+export type IFontOptions = "hello" | "world";
+
+
+type RGB = `rgb(${number}, ${number}, ${number})`;
+type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+type HEX = `#${string}`;
+
+
+
+export type IColourOptions = RGB | RGBA | HEX;
+
+export type ILayoutData = {
+    cvHeader: ICVHeader;
+    font: IFontOptions;
+    headerColour: IColourOptions;
+}

@@ -1,39 +1,65 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExperience, educationSchema } from "../../models/FormData";
+import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExperience, educationSchema, workExperienceSchema } from "../../models/FormData";
 import { EditFormContainer } from "./components/FormEditable";
 import { CVInputContainerMemo } from "./components/InputText"
 import { CVHeaderContext } from "../../context/CVHeaderContext";
-import { EducationExperienceForm, ExperienceSelectBtn } from "./components/ExperienceSelectBtn";
+import { EducationExperienceForm, ExperienceSelectBtn, WorkExperienceForm } from "./components/ExperienceSelectBtn";
 import { AddExperienceBtn } from "./components/AddExperience";
-import { useOpenForm } from "../../hooks/useOpenForm";
-import is from "zod/v4/locales/is.cjs";
-import { IFormCollapsableProps, IFormTogglable } from "../../models/Collapsable";
+import { IFormTogglable } from "../../models/Collapsable";
 import { FormUtilBtns } from "./components/FormUtilBtns";
+
+import "./components/SelectableForm.css";
 
 
 export function EditForms() {
+    const [isPersonalDetails, setPersonalDetails] = useState<boolean>(true);
 
     return (
-        <>
-            <PersonalInfoForm />
-            <LayoutForm />
-        </>
+        <div className="edit-form-container">
+            <div className="form-type-toggle-btns">
+                <button
+                    type="button"
+                    disabled={isPersonalDetails}
+                    className="edit-form-personal-details-btn edit-form-toggle-btn"
+                    onClick={() => setPersonalDetails(true)}>
+                    Personal Details
+                </button>
+                <button
+                    type="button"
+                    disabled={!isPersonalDetails}
+                    className="edit-form-layout-btn edit-form-toggle-btn"
+                    onClick={() => setPersonalDetails(false)}>
+                    Layout
+                </button>
+            </div>
+            {isPersonalDetails ?
+                <PersonalInfoForm />
+                :
+                <LayoutForm />
+            }
+        </div>
     );
 }
 
 
 
 
-type IHandleFormState = {
+export type IHandleFormState = {
     isOpen: IFormTogglable;
     payload: Omit<IEducation, "id"> & { saveFunction: (formData: IEducation) => void } | null;
 }
 
 
+export type IHandleWorkFormState = {
+    isOpen: IFormTogglable;
+    payload: Omit<IWorkExperience, "id"> & { saveFunction: (formData: IWorkExperience) => void } | null;
+}
 
 export function PersonalInfoForm() {
     const ctx: { curr: IFormData, setState: Dispatch<SetStateAction<IFormData>> } | null = useContext(CVHeaderContext);
     if (ctx === null || ctx.curr === null || ctx.setState === null) { return null; }
+
+
 
     const { curr, setState } = ctx;
 
@@ -52,8 +78,17 @@ export function PersonalInfoForm() {
     const { isOpen } = handleFormCurr;
 
 
+
+    const [handleWorkFormCurr, setWorkFormState] = useState<IHandleWorkFormState>({
+        isOpen: "closed",
+        payload: null
+    });
+
+    const isWorkOpen = handleWorkFormCurr.isOpen;
+
+
     return (
-        <div className="edit-form-full-container">
+        <div className="edit-form-personal-details-container">
             <EditFormContainer legendText="Personal Details" isOpenInitial={"open"}>
                 <CVInputContainerMemo value={personalInfo.fullName} placeholder={"Full Name..."} type={"text"} id={"full-name"} name={"full-name"} label={"Full Name"} >
                     <input onChange={(e) => setState((prev: IFormData) => ({ ...prev, personalDetails: { ...prev.personalDetails, fullName: e.target.value } }))} />
@@ -135,7 +170,7 @@ export function PersonalInfoForm() {
                                                         // Here we want to update the existing education entry in the state
                                                         setState((prev: IFormData) => {
                                                             const updatedEducation = prev.education.map((e) => e.id === edu.id ?
-                                                                { ...e, institution: data.institution ?? edu.institution, degree: data.degree ?? edu.degree, dates: data.dates ?? edu.dates }
+                                                                { ...e, ...data }
                                                                 : e);
                                                             return { ...prev, education: updatedEducation };
                                                         });
@@ -152,7 +187,8 @@ export function PersonalInfoForm() {
                                                 const updatedEducation = prev.education.filter((ed) => ed.id !== edu.id);
                                                 return { ...prev, education: updatedEducation };
                                             });
-                                        }} />
+                                        }}
+                                    />
 
                                 </React.Fragment>
                             ))}
@@ -194,17 +230,6 @@ export function PersonalInfoForm() {
                                 institution={handleFormCurr.payload?.institution}
                                 dates={handleFormCurr.payload?.dates} />
                             <FormUtilBtns
-                                // onSaveClick={(e) => {
-                                //     e.preventDefault();
-                                //     // Here we want to add the new education entry to the state
-
-                                //     handleFormCurr.payload?.saveFunction();
-
-                                //     setFormState({
-                                //         isOpen: "closed",
-                                //         payload: null
-                                //     });
-                                // }} 
                                 onCancelClick={(e) => {
                                     e.preventDefault();
 
@@ -221,26 +246,146 @@ export function PersonalInfoForm() {
 
             </EditFormContainer>
 
-            <EditFormContainer legendText="Work Experience" isOpenInitial={"closed"}>
-                <div className="experience-selection-entries work-entries">
-                    {workExperienceSummary.map((work: IWorkExperience) => (
-                        <React.Fragment key={work.id}>
+            <EditFormContainer
+                legendText="Work Experience"
+                isOpenInitial={"closed"}
+                onSubmit={(e) => {
+                    e.preventDefault();
 
-                            <ExperienceSelectBtn btnTitle={work.companyName} onclick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
+                    const formData = new FormData(e.currentTarget);
 
-                                setState((prev: IFormData) => {
-                                    const updatedWork = prev.workExperience.filter((w) => w.id !== work.id);
-                                    return { ...prev, workExperience: updatedWork };
-                                });
-                            }} />
+                    const startDateValue = formData.get("startDate");
+                    const endDateValue = formData.get("endDate");
+
+                    const formObj: Partial<IWorkExperience> = {
+                        companyName: formData.get("company-name")?.toString() ?? "",
+                        jobTitle: formData.get("job-title")?.toString() ?? "",
+                        jobDescription: formData.get("job-description")?.toString() ?? "",
+
+                        dates: {
+                            startDate: typeof startDateValue === "string"
+                                ? new Date(startDateValue)
+                                : new Date("2020-01-01"),
+                            endDate: typeof endDateValue === "string"
+                                ? new Date(endDateValue)
+                                : "Present"
+                        }
+                    };
+
+                    const workSchemaWithoutId = workExperienceSchema.omit({ id: true });
+
+                    if (workSchemaWithoutId.safeParse(formObj).success) {
+                        handleWorkFormCurr.payload?.saveFunction(formObj as IWorkExperience);
+                        setWorkFormState({
+                            isOpen: "closed",
+                            payload: null
+                        });
+
+                        return;
+
+                    }
+                }}>
 
 
-                        </React.Fragment>
-                    ))}
-                </div>
-                <AddExperienceBtn experience="Job" />
+                {isWorkOpen === "closed" || handleWorkFormCurr.payload === null ?
+                    <>
+                        <div className="experience-selection-entries work-entries">
+                            {workExperienceSummary.map((work: IWorkExperience) => (
+                                <React.Fragment key={work.id}>
+
+                                    <ExperienceSelectBtn
+                                        btnTitle={work.companyName}
+                                        onclick={() => {
+                                            setWorkFormState({
+                                                isOpen: "open",
+                                                payload: {
+                                                    companyName: work.companyName,
+                                                    jobTitle: work.jobTitle,
+                                                    jobDescription: work.jobDescription,
+                                                    dates: work.dates,
+                                                    saveFunction: (data: IWorkExperience) => {
+                                                        // Here we want to update the existing education entry in the state
+                                                        setState((prev: IFormData) => {
+                                                            const updatedEducation = prev.workExperience.map((e) => e.id === work.id ?
+                                                                { ...e, ...data }
+                                                                : e);
+                                                            return { ...prev, workExperience: updatedEducation };
+                                                        });
+                                                    }
+
+                                                }
+                                            });
+                                        }}
+                                        delClick={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+
+                                            setState((prev: IFormData) => {
+                                                const updatedEducation = prev.workExperience.filter((w) => w.id !== work.id);
+                                                return { ...prev, workExperience: updatedEducation };
+                                            });
+                                        }}
+                                    />
+
+
+                                </React.Fragment>
+                            ))}
+                        </div>
+                        <AddExperienceBtn
+                            experience="Job"
+                            onclick={() => {
+                                setWorkFormState({
+                                    isOpen: "open",
+                                    payload: {
+                                        companyName: "",
+                                        jobDescription: "",
+                                        jobTitle: "",
+                                        dates: {
+                                            startDate: new Date("01/01/2020"),
+                                            endDate: "Present"
+                                        },
+                                        saveFunction: (data: IWorkExperience) => {
+                                            // Here we want to add the new education entry to the state
+                                            setState((prev: IFormData) => ({
+                                                ...prev,
+                                                workExperience: [...prev.workExperience, {
+                                                    id: crypto.randomUUID(),
+                                                    companyName: data.companyName ?? "",
+                                                    jobTitle: data.jobTitle ?? "",
+                                                    jobDescription: data.jobDescription ?? "",
+                                                    dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: "Present" }
+                                                }]
+                                            }));
+                                        }
+                                    }
+                                })
+                            }}
+                        />
+
+                    </>
+                    :
+                    <>
+                        <div className="full-selectable-form-container">
+                            <WorkExperienceForm
+                                companyName={handleWorkFormCurr.payload?.companyName}
+                                jobTitle={handleWorkFormCurr.payload?.jobTitle}
+                                jobDescription={handleWorkFormCurr.payload?.jobDescription}
+                                dates={handleWorkFormCurr.payload?.dates}
+                            />
+                            <FormUtilBtns
+                                onCancelClick={(e) => {
+                                    e.preventDefault();
+
+                                    setWorkFormState({
+                                        isOpen: "closed",
+                                        payload: null
+                                    });
+                                }}
+                            />
+                        </div>
+                    </>}
+
+
             </EditFormContainer>
 
         </div>
@@ -249,5 +394,80 @@ export function PersonalInfoForm() {
 
 export function LayoutForm() {
 
-    return null;
+
+
+    return (
+        <div className="edit-form-layout-details-container">
+            <EditFormContainer
+                legendText="Layout"
+                isOpenInitial={"open"}>
+                
+                <div 
+                    className="layout-form-btns-container cv-editor-label-input-container"
+                    data-layout="Top"
+                    >
+                    <div className="layout-form-title-btn-container">
+                        <button type="button" className="layout-form-btn"></button>
+                        <p className="layout-form-title">Top</p>
+                    </div>
+                    <div className="layout-form-title-btn-container">
+                        <button type="button" className="layout-form-btn"></button>
+                        <p className="layout-form-title">Left</p>
+                    </div>
+                    <div className="layout-form-title-btn-container">
+                        <button type="button" className="layout-form-btn"></button>
+                        <p className="layout-form-title">Right</p>
+                    </div>
+
+                </div>
+
+            </EditFormContainer>
+
+            <EditFormContainer
+                legendText="Color Scheme"
+                isOpenInitial={"open"}
+                >
+                
+                <div 
+                    className="color-scheme-btns-container cv-editor-label-input-container"
+                    >
+                    <CVInputContainerMemo 
+                        label="Primary Color" 
+                        name="primary-color" 
+                        id="primary-color"
+                        type="color">
+                        <input defaultValue="#000000"/>
+                    </CVInputContainerMemo>
+                </div>
+
+            </EditFormContainer>
+
+
+            <EditFormContainer
+                legendText="Font Style"
+                isOpenInitial={"open"}
+                >
+                
+                <div 
+                    className="font-style-btns-container cv-editor-label-input-container"
+                    data-font-style="Arial"
+                    >
+                    
+                    <button type="button" className="font-style-btn">
+                        <p className="font-style-btn-symbol">Aa</p>
+                        <p className="font-style-btn-type-title">Wing Ding</p>
+                    </button>
+                    <button type="button" className="font-style-btn">
+                        <p className="font-style-btn-symbol">Aa</p>
+                        <p className="font-style-btn-type-title">Serif</p>
+                    </button>
+                    <button type="button" className="font-style-btn">
+                        <p className="font-style-btn-symbol">Aa</p>
+                        <p className="font-style-btn-type-title">Times</p>
+                    </button>
+
+                </div>
+            </EditFormContainer>
+        </div>
+    );
 }

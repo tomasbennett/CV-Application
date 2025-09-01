@@ -1,0 +1,26 @@
+div.full-selectable-form-container{
+    width: 100%;
+
+    /* background: var(--root-bcg); */
+
+    display: flex;
+    flex-direction: column;
+
+
+    /* column-gap: 2rem; */
+
+    /* padding: var(--root-padding); */
+}
+
+div.input-date-container{
+    display: flex;
+    column-gap: .5rem;
+}
+
+div.input-date-container input{
+    cursor: pointer;
+}
+
+div.form-util-btns-container{
+
+}

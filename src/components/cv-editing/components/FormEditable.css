@@ -1,22 +1,4 @@
-div.edit-form-full-container{
-    flex-shrink: 0;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-    row-gap: 2.5rem;
-
-    height: 100%;
-    width: 38rem;
-
-    overflow-y: auto;
-
-    scrollbar-gutter: stable;
-    /* direction: rtl; */
-    
-}
 
 
 form.cv-editor-form{

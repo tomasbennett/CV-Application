@@ -1,7 +1,7 @@
 header.cv-header{
-    --header-cv-bcg: rgb(0, 46, 59);
+    /* --header-cv-bcg: rgb(0, 46, 59); */
 
-    background-color: var(--header-cv-bcg);
+    background-color: var(--cv-header-background-colour);
 
     width: 100%;
     height: 100%;

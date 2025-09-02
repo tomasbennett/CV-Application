@@ -1,6 +1,6 @@
 export type ICVHeader = "Top" | "Left" | "Right";
 
-export type IFontOptions = "hello" | "world";
+export type IFontOptions = "Times" | "Arial" | "Monospace";
 
 
 type RGB = `rgb(${number}, ${number}, ${number})`;

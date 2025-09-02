@@ -392,6 +392,14 @@ export function PersonalInfoForm() {
     );
 }
 
+
+
+
+
+
+import "./components/LayoutForm.css";
+
+
 export function LayoutForm() {
 
 
@@ -436,7 +444,7 @@ export function LayoutForm() {
                         name="primary-color" 
                         id="primary-color"
                         type="color">
-                        <input defaultValue="#000000"/>
+                        <input />
                     </CVInputContainerMemo>
                 </div>
 
@@ -450,18 +458,18 @@ export function LayoutForm() {
                 
                 <div 
                     className="font-style-btns-container cv-editor-label-input-container"
-                    data-font-style="Arial"
+                    data-font-style="Monospace"
                     >
                     
-                    <button type="button" className="font-style-btn">
+                    <button type="button" className="font-style-btn arial-font">
                         <p className="font-style-btn-symbol">Aa</p>
-                        <p className="font-style-btn-type-title">Wing Ding</p>
+                        <p className="font-style-btn-type-title">Arial</p>
                     </button>
-                    <button type="button" className="font-style-btn">
+                    <button type="button" className="font-style-btn monospace-font">
                         <p className="font-style-btn-symbol">Aa</p>
-                        <p className="font-style-btn-type-title">Serif</p>
+                        <p className="font-style-btn-type-title">Mono</p>
                     </button>
-                    <button type="button" className="font-style-btn">
+                    <button type="button" className="font-style-btn times-font">
                         <p className="font-style-btn-symbol">Aa</p>
                         <p className="font-style-btn-type-title">Times</p>
                     </button>

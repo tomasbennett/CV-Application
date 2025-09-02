@@ -37,8 +37,12 @@ body {
 
   width: 100dvw;
   height: 100dvh;
-
+  min-width: fit-content;
   min-height: fit-content;
+
+  /* overflow: hidden; */
+
+  /* scrollbar-gutter: stable both-edges; */
 }
 
 button{

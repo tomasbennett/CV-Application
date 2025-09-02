@@ -2,6 +2,7 @@ import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExp
 
 
 import { v4 as uuidv4 } from 'uuid';
+import { ILayoutData } from "./models/LayoutData";
 
 
 
@@ -67,3 +68,10 @@ export const defaultEditFormData: IFormData = {
     education: defaultEducation,
     workExperience: defaultWorkExperience 
 };
+
+
+export const defCVLayout: ILayoutData = {
+    cvHeader: "Top",
+    font: "Times",
+    headerColour: "#002E3B"
+}

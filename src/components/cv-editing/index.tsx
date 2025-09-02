@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { IEducation, IFormData, IPersonalDetails, IProfessionalSummary, IWorkExperience, educationSchema, workExperienceSchema } from "../../models/FormData";
 import { EditFormContainer } from "./components/FormEditable";
 import { CVInputContainerMemo } from "./components/InputText"
-import { CVHeaderContext } from "../../context/CVHeaderContext";
+import { CVHeaderContext } from "../../context/CVDataContext";
 import { EducationExperienceForm, ExperienceSelectBtn, WorkExperienceForm } from "./components/ExperienceSelectBtn";
 import { AddExperienceBtn } from "./components/AddExperience";
 import { IFormTogglable } from "../../models/Collapsable";
@@ -398,10 +398,18 @@ export function PersonalInfoForm() {
 
 
 import "./components/LayoutForm.css";
+import { CVLayout } from "../cv-layout";
+import { ILayoutData } from "../../models/LayoutData";
+import { ILayoutContextType, LayoutContext } from "../../context/CVLayoutContext";
 
 
 export function LayoutForm() {
+    const ctx: ILayoutContextType | null = useContext(LayoutContext);
 
+    if (ctx === null || ctx.currLayout === null || ctx.setLayout === null) { return null; }
+
+    const { currLayout, setLayout } = ctx;
+    const { cvHeader, headerColour, font } = currLayout;
 
 
     return (
@@ -412,18 +420,24 @@ export function LayoutForm() {
                 
                 <div 
                     className="layout-form-btns-container cv-editor-label-input-container"
-                    data-layout="Top"
+                    data-layout={cvHeader}
                     >
                     <div className="layout-form-title-btn-container">
-                        <button type="button" className="layout-form-btn"></button>
+                        <button disabled={cvHeader === "Top"} type="button" className="layout-form-btn" onClick={(e) => {
+                            setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Top" }))
+                        }}></button>
                         <p className="layout-form-title">Top</p>
                     </div>
                     <div className="layout-form-title-btn-container">
-                        <button type="button" className="layout-form-btn"></button>
+                        <button disabled={cvHeader === "Left"} type="button" className="layout-form-btn" onClick={(e) => {
+                            setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Left" }))
+                        }}></button>
                         <p className="layout-form-title">Left</p>
                     </div>
                     <div className="layout-form-title-btn-container">
-                        <button type="button" className="layout-form-btn"></button>
+                        <button disabled={cvHeader === "Right"} type="button" className="layout-form-btn" onClick={(e) => {
+                        setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Right" }))
+                        }}></button>
                         <p className="layout-form-title">Right</p>
                     </div>
 
@@ -443,9 +457,12 @@ export function LayoutForm() {
                         label="Primary Color" 
                         name="primary-color" 
                         id="primary-color"
-                        type="color">
-                        <input />
-                    </CVInputContainerMemo>
+                        type="color"
+                        value={headerColour}>
+                        <input onChange={(e) => {
+                            setLayout((prev: ILayoutData) => ({ ...prev, headerColour: e.target.value as ILayoutData["headerColour"] }))
+                        }} /> 
+                    </CVInputContainerMemo> 
                 </div>
 
             </EditFormContainer>
@@ -458,18 +475,24 @@ export function LayoutForm() {
                 
                 <div 
                     className="font-style-btns-container cv-editor-label-input-container"
-                    data-font-style="Monospace"
+                    data-font-style={font}
                     >
                     
-                    <button type="button" className="font-style-btn arial-font">
+                    <button disabled={font === "Arial"} type="button" className="font-style-btn arial-font" onClick={(e) => {
+                        setLayout((prev: ILayoutData) => ({ ...prev, font: "Arial" }))
+                    }}>
                         <p className="font-style-btn-symbol">Aa</p>
                         <p className="font-style-btn-type-title">Arial</p>
                     </button>
-                    <button type="button" className="font-style-btn monospace-font">
+                    <button disabled={font === "Monospace"} type="button" className="font-style-btn monospace-font" onClick={(e) => {
+                        setLayout((prev: ILayoutData) => ({ ...prev, font: "Monospace" }))
+                    }}>
                         <p className="font-style-btn-symbol">Aa</p>
                         <p className="font-style-btn-type-title">Mono</p>
                     </button>
-                    <button type="button" className="font-style-btn times-font">
+                    <button disabled={font === "Times"} type="button" className="font-style-btn times-font" onClick={(e) => {
+                        setLayout((prev: ILayoutData) => ({ ...prev, font: "Times" }))
+                    }}>
                         <p className="font-style-btn-symbol">Aa</p>
                         <p className="font-style-btn-type-title">Times</p>
                     </button>

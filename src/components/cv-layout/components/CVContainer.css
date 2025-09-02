@@ -17,7 +17,7 @@ section.cv-container{
     align-self: flex-start;
 }
 
-section.cv-container[data-header-layout-position="top"]{
+section.cv-container[data-header-layout-position="Top"]{
     grid-template-areas: "header"
                          "main";
 
@@ -27,7 +27,7 @@ section.cv-container[data-header-layout-position="top"]{
     grid-template-columns: 1fr;
 }
 
-section.cv-container[data-header-layout-position="left"]{
+section.cv-container[data-header-layout-position="Left"]{
     grid-template-areas: "header main";
 
     grid-template-rows: 1fr;
@@ -35,7 +35,7 @@ section.cv-container[data-header-layout-position="left"]{
     grid-template-columns: 25rem 1fr;
 }
 
-section.cv-container[data-header-layout-position="right"]{
+section.cv-container[data-header-layout-position="Right"]{
     grid-template-areas: "main header";
 
     grid-template-rows: 1fr;

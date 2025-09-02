@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./MainCV.css"
 import { IEducation, IFormData, IProfessionalSummary, IWorkExperience } from "../../../models/FormData";
-import { CVHeaderContext } from "../../../context/CVHeaderContext";
+import { CVHeaderContext } from "../../../context/CVDataContext";
 
 export function CVMain() {
     const ctx: { curr: IFormData } | null = useContext(CVHeaderContext);

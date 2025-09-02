@@ -1,7 +1,7 @@
 import { use, useContext } from "react"
 import { IFormData, IPersonalDetails } from "../../../models/FormData"
 import "./HeaderCV.css"
-import { CVHeaderContext } from "../../../context/CVHeaderContext";
+import { CVHeaderContext } from "../../../context/CVDataContext";
 
 export function CVHeader() {
     const ctx: { curr: IFormData } | null = useContext(CVHeaderContext);

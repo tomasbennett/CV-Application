@@ -1,4 +1,10 @@
+div.edit-form-layout-details-container{
+
+    --transition-speed: .3s;
+}
+
 div.layout-form-btns-container{
+
     flex-shrink: 0;
 
     width: 100%;
@@ -35,7 +41,17 @@ div.layout-form-btns-container > div > button{
     /* background: linear-gradient(to bottom, var(--cv-header-background-colour) 50%, white 50%, white); */
 
     outline: .2rem solid var(--cv-header-background-colour);
+
+    transition: outline var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed);
 }
+
+div.layout-form-btns-container > div > button:disabled{
+    cursor: not-allowed;
+
+    outline: .2rem solid rgb(0, 216, 133);
+    box-shadow: 0 0 2rem rgb(0, 216, 133);
+}
+
 
 div.layout-form-btns-container > div:nth-child(1) > button{
     background: linear-gradient(to bottom, var(--cv-header-background-colour) 50%, white 50%, white);
@@ -102,6 +118,8 @@ div.font-style-btns-container{
 }
 
 div.font-style-btns-container > button{
+    --box-shadow-blur: 1.5rem;
+
     flex: 1;
 
     max-width: 10rem;
@@ -121,8 +139,18 @@ div.font-style-btns-container > button{
 
     border: .2rem solid white;
 
-    box-shadow: 0 0 1.5rem rgb(56, 56, 56);
+    box-shadow: 0 0 var(--box-shadow-blur) rgb(56, 56, 56);
+
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
 }
+
+div.font-style-btns-container > button:disabled{
+    cursor: not-allowed;
+
+    border-color: rgb(0, 216, 133);
+    box-shadow: 0 0 var(--box-shadow-blur) rgb(0, 216, 133);
+}
+
 
 div.font-style-btns-container > button.arial-font{
     font-family: Arial, Helvetica, sans-serif;

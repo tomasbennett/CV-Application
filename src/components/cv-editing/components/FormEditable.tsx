@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react"
 import "./FormEditable.css"
 import { CVInputContainerMemo } from "./InputText"
-import { IFormContextType } from "../../../context/CVHeaderContext";
+import { IFormContextType } from "../../../context/CVDataContext";
 import { FormCollapsableLegendMemo } from "./FormCollapsable";
 import { IFormCollapsableProps } from "../../../models/Collapsable";
 import { useOpenForm } from "../../../hooks/useOpenForm";

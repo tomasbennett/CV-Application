@@ -31,7 +31,7 @@ export function CVMain() {
                             {educationSummary.map((edu: IEducation) => (
                                 <div key={edu.id} className="cv-education-entry">
                                     <h3>{edu.degree}</h3>
-                                    <p>{edu.institution} | {edu.dates.startDate.toLocaleString()} - {edu.dates.endDate.toLocaleString()}</p>
+                                    <p>{edu.institution} | {edu.dates.startDate.toLocaleDateString("en-GB")} - {typeof edu.dates.endDate === "object" && edu.dates.endDate.toLocaleDateString("en-GB")}</p>
                                 </div>
                             ))}
                         </div>
@@ -45,7 +45,7 @@ export function CVMain() {
                             {workExperienceSummary.map((work: IWorkExperience) => (
                                 <div key={work.id} className="cv-work-entry">
                                     <h3>{work.jobTitle}</h3>
-                                    <p>{work.companyName} | {work.dates.startDate.toLocaleString()} - {work.dates.endDate.toLocaleString()}</p>
+                                    <p>{work.companyName} | {work.dates.startDate.toLocaleDateString("en-GB")} - {typeof work.dates.endDate === "object" && work.dates.endDate.toLocaleDateString("en-GB")}</p>
                                     <p>{work.jobDescription}</p>
                                 </div>
                             ))}

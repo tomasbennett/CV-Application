@@ -47,7 +47,7 @@ export const defaultWorkExperience: IWorkExperience[] = [
         jobDescription: "Developed and maintained user interfaces using React and Redux. Collaborated with designers to implement responsive designs and improve user experience. Optimized application performance and ensured cross-browser compatibility.",
         dates: {
             startDate: new Date("2020-01-15"),
-            endDate: "Present"
+            endDate: new Date("2020-01-19")
         }
     },
     {

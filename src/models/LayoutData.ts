@@ -16,3 +16,5 @@ export type ILayoutData = {
     font: IFontOptions;
     headerColour: IColourOptions;
 }
+
+//NEED TO COMBINE INTO A SELECTABLEFORM WITH FUNCTIONALITY

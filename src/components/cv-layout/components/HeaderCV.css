@@ -1,20 +1,101 @@
-header.cv-header{
+header.cv-header {
     /* --header-cv-bcg: rgb(0, 46, 59); */
 
     background-color: var(--cv-header-background-colour);
 
     width: 100%;
     height: 100%;
+
+    display: grid;
 }
 
-section.cv-container[data-header-layout-position="top"] header.cv-header{
+section.cv-container[data-header-layout-position="Top"] header.cv-header {
+    grid-template-areas: "header header"
+        "email phone"
+        "address address";
+
+    grid-template-columns: 1fr 1fr;
+
+    place-items: center;
+
+    padding: var(--cv-padding-top-bottom) var(--cv-padding-left-right);
+
+    column-gap: 2rem;
+    row-gap: .5rem;
 
 }
 
-section.cv-container[data-header-layout-position="left"] header.cv-header{
+section.cv-container[data-header-layout-position="Left"] header.cv-header,
+section.cv-container[data-header-layout-position="Right"] header.cv-header  {
+    grid-template-areas: "header"
+        "email"
+        "phone"
+        "address";
 
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, min-content);
+    
+
+    place-items: start;
+
+    padding: var(--cv-padding-top-bottom) var(--cv-padding-left-right);
+    /* padding-left: 1rem; */
+
+    row-gap: 2rem;
+
+    & > * {
+        /* width: 100%; */
+
+        text-align: left;
+    }
 }
 
-section.cv-container[data-header-layout-position="right"] header.cv-header{
+header.cv-header>h1 {
+
+
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    /* text-transform: uppercase; */
+}
+
+header.cv-header>p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .8rem;
+
+    & > svg{
+        flex-shrink: 0;
+    }
+    /* text-transform: uppercase; */
+}
+
+header.cv-header>h1 {
+    grid-area: header;
+}
+
+header.cv-header>p.cv-header-email {
+    grid-area: email;
+}
+
+header.cv-header>p.cv-header-phone {
+    grid-area: phone;
+}
+
+header.cv-header>p.cv-header-address {
+    grid-area: address;
+}
+
+
+
+
+
+
+section.cv-container[data-header-layout-position="Right"] header.cv-header {
 
 }

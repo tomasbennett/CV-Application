@@ -1,4 +1,4 @@
-// import React from "react";
+// import React, { useState } from "react";
 // import { IEducation, IFormData, IWorkExperience, educationSchema } from "../../../models/FormData";
 // import { AddExperienceBtn } from "./AddExperience";
 // import { ExperienceSelectBtn, EducationExperienceForm } from "./ExperienceSelectBtn";
@@ -17,6 +17,10 @@
 //     isOpenInitial
 // }: ISelectableFormsProps) {
 
+//     const [selectIsOpen, setSelectIsOpen] = useState<{ isOpen: IFormTogglable; payload: Omit<T, "id"> & { saveFunction: (formData: T) => void } | null; }>({
+//         isOpen: "closed",
+//         payload: null
+//     });
 
 //     return (
 //         <EditFormContainer
@@ -27,6 +31,8 @@
 
 //                 const formData = new FormData(e.currentTarget);
 
+
+                
 //                 const startDateValue = formData.get("startDate");
 //                 const endDateValue = formData.get("endDate");
 

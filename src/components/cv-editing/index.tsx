@@ -398,7 +398,6 @@ export function PersonalInfoForm() {
 
 
 import "./components/LayoutForm.css";
-import { CVLayout } from "../cv-layout";
 import { ILayoutData } from "../../models/LayoutData";
 import { ILayoutContextType, LayoutContext } from "../../context/CVLayoutContext";
 

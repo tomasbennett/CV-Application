@@ -1,6 +1,7 @@
 section.cv-container{
-    /* flex: 1; */
-    /* flex: 1 1 0; */
+    --cv-padding-left-right: 1rem;
+    --cv-padding-top-bottom: 1rem;
+
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0;

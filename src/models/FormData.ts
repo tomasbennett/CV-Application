@@ -14,6 +14,8 @@ export type IProfessionalSummary = {
 };
 
 
+
+
 export const educationSchema = z.object({
     id: z.string().uuid(),
     institution: z.string().min(1, "Institution name is required"),

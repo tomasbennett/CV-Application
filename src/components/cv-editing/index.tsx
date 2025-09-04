@@ -8,7 +8,20 @@ import { AddExperienceBtn } from "./components/AddExperience";
 import { IFormTogglable } from "../../models/Collapsable";
 import { FormUtilBtns } from "./components/FormUtilBtns";
 
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
+import { DevTool } from "@hookform/devtools";
+
+
+
+
 import "./components/SelectableForm.css";
+
+
+
 
 
 export function EditForms() {
@@ -46,13 +59,12 @@ export function EditForms() {
 
 export type IHandleFormState = {
     isOpen: IFormTogglable;
-    payload: Omit<IEducation, "id"> & { saveFunction: (formData: IEducation) => void } | null;
+    payload: Omit<IEducation, "id"> & { saveFunction: (formData: Omit<IEducation, "id">) => void } | null;
 }
-
 
 export type IHandleWorkFormState = {
     isOpen: IFormTogglable;
-    payload: Omit<IWorkExperience, "id"> & { saveFunction: (formData: IWorkExperience) => void } | null;
+    payload: Omit<IWorkExperience, "id"> & { saveFunction: (formData: Omit<IWorkExperience, "id">) => void } | null;
 }
 
 export function PersonalInfoForm() {
@@ -86,6 +98,31 @@ export function PersonalInfoForm() {
 
     const isWorkOpen = handleWorkFormCurr.isOpen;
 
+    const {
+        register: registerEducation,
+        handleSubmit: handleSubmitEducation,
+        formState: { errors: educationErrors },
+        control
+    } = useForm<Omit<IEducation, "id">>(
+        {
+            resolver: zodResolver(educationSchema.omit({ id: true })),
+            mode: "onSubmit",
+            reValidateMode: "onChange"
+        }
+    );
+    
+    const {
+        register: registerWork,
+        handleSubmit: handleSubmitWork,
+        formState: { errors: workErrors }
+    } = useForm<Omit<IWorkExperience, "id">>(
+        {
+            resolver: zodResolver(workExperienceSchema.omit({ id: true })),
+            mode: "onSubmit",
+            reValidateMode: "onChange"
+        }
+    );
+
 
     return (
         <div className="edit-form-personal-details-container">
@@ -115,41 +152,53 @@ export function PersonalInfoForm() {
 
             </EditFormContainer>
 
-            <EditFormContainer legendText="Education" isOpenInitial={"closed"} onSubmit={(e) => {
-                e.preventDefault();
-
-                const formData = new FormData(e.currentTarget);
-
-                const startDateValue = formData.get("startDate");
-                const endDateValue = formData.get("endDate");
-
-                const formObj: Partial<IEducation> = {
-                    institution: formData.get("institution")?.toString() ?? "",
-                    degree: formData.get("degree")?.toString() ?? "",
-                    dates: {
-                        startDate: typeof startDateValue === "string"
-                            ? new Date(startDateValue)
-                            : new Date("2020-01-01"),
-                        endDate: typeof endDateValue === "string"
-                            ? new Date(endDateValue)
-                            : "Present"
-                    }
-                };
-
-                const educationSchemaWithoutId = educationSchema.omit({ id: true });
-
-                if (educationSchemaWithoutId.safeParse(formObj).success) {
-                    handleFormCurr.payload?.saveFunction(formObj as IEducation);
+            <EditFormContainer
+                legendText="Education"
+                isOpenInitial={"closed"}
+                onSubmit={handleSubmitEducation((data) => {
+                    console.log(data.dates);
+                    handleFormCurr.payload?.saveFunction(data);
                     setFormState({
                         isOpen: "closed",
                         payload: null
                     });
+                }, (err) => { console.log(err); })}
+                // onSubmit={(e) => {
+                //     e.preventDefault();
 
-                    return;
+                //     const formData = new FormData(e.currentTarget);
 
-                }
+                //     const startDateValue = formData.get("startDate");
+                //     const endDateValue = formData.get("endDate");
 
-            }}>
+                //     const formObj: Partial<IEducation> = {
+                //         institution: formData.get("institution")?.toString() ?? "",
+                //         degree: formData.get("degree")?.toString() ?? "",
+                //         dates: {
+                //             startDate: typeof startDateValue === "string"
+                //                 ? new Date(startDateValue)
+                //                 : new Date("2020-01-01"),
+                //             endDate: typeof endDateValue === "string"
+                //                 ? new Date(endDateValue)
+                //                 : "Present"
+                //         }
+                //     };
+
+                //     const educationSchemaWithoutId = educationSchema.omit({ id: true });
+
+                //     if (educationSchemaWithoutId.safeParse(formObj).success) {
+                //         handleFormCurr.payload?.saveFunction(formObj as IEducation);
+                //         setFormState({
+                //             isOpen: "closed",
+                //             payload: null
+                //         });
+
+                //         return;
+
+                //     }
+
+                // }}
+                >
 
                 {isOpen === "closed" || handleFormCurr.payload === null ?
                     <>
@@ -166,7 +215,7 @@ export function PersonalInfoForm() {
                                                     institution: edu.institution,
                                                     degree: edu.degree,
                                                     dates: edu.dates,
-                                                    saveFunction: (data: IEducation) => {
+                                                    saveFunction: (data: Omit<IEducation, "id">) => {
                                                         // Here we want to update the existing education entry in the state
                                                         setState((prev: IFormData) => {
                                                             const updatedEducation = prev.education.map((e) => e.id === edu.id ?
@@ -205,7 +254,7 @@ export function PersonalInfoForm() {
                                             startDate: new Date("01/01/2020"),
                                             endDate: "Present"
                                         },
-                                        saveFunction: (data: IEducation) => {
+                                        saveFunction: (data: Omit<IEducation, "id">) => {
                                             // Here we want to add the new education entry to the state
                                             setState((prev: IFormData) => ({
                                                 ...prev,
@@ -228,7 +277,9 @@ export function PersonalInfoForm() {
                             <EducationExperienceForm
                                 degree={handleFormCurr.payload?.degree}
                                 institution={handleFormCurr.payload?.institution}
-                                dates={handleFormCurr.payload?.dates} />
+                                dates={handleFormCurr.payload?.dates}
+                                register={registerEducation}
+                                errors={educationErrors} />
                             <FormUtilBtns
                                 onCancelClick={(e) => {
                                     e.preventDefault();
@@ -246,45 +297,55 @@ export function PersonalInfoForm() {
 
             </EditFormContainer>
 
+            <DevTool control={control} />
+
             <EditFormContainer
                 legendText="Work Experience"
                 isOpenInitial={"closed"}
-                onSubmit={(e) => {
-                    e.preventDefault();
+                onSubmit={handleSubmitWork((data) => {
+                    handleWorkFormCurr.payload?.saveFunction(data);
+                    setWorkFormState({
+                        isOpen: "closed",
+                        payload: null
+                    });
+                })}
+                // onSubmit={(e) => {
+                //     e.preventDefault();
 
-                    const formData = new FormData(e.currentTarget);
+                //     const formData = new FormData(e.currentTarget);
 
-                    const startDateValue = formData.get("startDate");
-                    const endDateValue = formData.get("endDate");
+                //     const startDateValue = formData.get("startDate");
+                //     const endDateValue = formData.get("endDate");
 
-                    const formObj: Partial<IWorkExperience> = {
-                        companyName: formData.get("company-name")?.toString() ?? "",
-                        jobTitle: formData.get("job-title")?.toString() ?? "",
-                        jobDescription: formData.get("job-description")?.toString() ?? "",
+                //     const formObj: Partial<IWorkExperience> = {
+                //         companyName: formData.get("company-name")?.toString() ?? "",
+                //         jobTitle: formData.get("job-title")?.toString() ?? "",
+                //         jobDescription: formData.get("job-description")?.toString() ?? "",
 
-                        dates: {
-                            startDate: typeof startDateValue === "string"
-                                ? new Date(startDateValue)
-                                : new Date("2020-01-01"),
-                            endDate: typeof endDateValue === "string"
-                                ? new Date(endDateValue)
-                                : "Present"
-                        }
-                    };
+                //         dates: {
+                //             startDate: typeof startDateValue === "string"
+                //                 ? new Date(startDateValue)
+                //                 : new Date("2020-01-01"),
+                //             endDate: typeof endDateValue === "string"
+                //                 ? new Date(endDateValue)
+                //                 : "Present"
+                //         }
+                //     };
 
-                    const workSchemaWithoutId = workExperienceSchema.omit({ id: true });
+                //     const workSchemaWithoutId = workExperienceSchema.omit({ id: true });
 
-                    if (workSchemaWithoutId.safeParse(formObj).success) {
-                        handleWorkFormCurr.payload?.saveFunction(formObj as IWorkExperience);
-                        setWorkFormState({
-                            isOpen: "closed",
-                            payload: null
-                        });
+                //     if (workSchemaWithoutId.safeParse(formObj).success) {
+                //         handleWorkFormCurr.payload?.saveFunction(formObj as IWorkExperience);
+                //         setWorkFormState({
+                //             isOpen: "closed",
+                //             payload: null
+                //         });
 
-                        return;
+                //         return;
 
-                    }
-                }}>
+                //     }
+                // }}
+                >
 
 
                 {isWorkOpen === "closed" || handleWorkFormCurr.payload === null ?
@@ -303,7 +364,7 @@ export function PersonalInfoForm() {
                                                     jobTitle: work.jobTitle,
                                                     jobDescription: work.jobDescription,
                                                     dates: work.dates,
-                                                    saveFunction: (data: IWorkExperience) => {
+                                                    saveFunction: (data: Omit<IWorkExperience, "id">) => {
                                                         // Here we want to update the existing education entry in the state
                                                         setState((prev: IFormData) => {
                                                             const updatedEducation = prev.workExperience.map((e) => e.id === work.id ?
@@ -344,7 +405,7 @@ export function PersonalInfoForm() {
                                             startDate: new Date("01/01/2020"),
                                             endDate: "Present"
                                         },
-                                        saveFunction: (data: IWorkExperience) => {
+                                        saveFunction: (data: Omit<IWorkExperience, "id">) => {
                                             // Here we want to add the new education entry to the state
                                             setState((prev: IFormData) => ({
                                                 ...prev,
@@ -353,7 +414,7 @@ export function PersonalInfoForm() {
                                                     companyName: data.companyName ?? "",
                                                     jobTitle: data.jobTitle ?? "",
                                                     jobDescription: data.jobDescription ?? "",
-                                                    dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: "Present" }
+                                                    dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: new Date("01/01/2025") }
                                                 }]
                                             }));
                                         }
@@ -371,6 +432,8 @@ export function PersonalInfoForm() {
                                 jobTitle={handleWorkFormCurr.payload?.jobTitle}
                                 jobDescription={handleWorkFormCurr.payload?.jobDescription}
                                 dates={handleWorkFormCurr.payload?.dates}
+                                register={registerWork}
+                                errors={workErrors}
                             />
                             <FormUtilBtns
                                 onCancelClick={(e) => {
@@ -416,11 +479,11 @@ export function LayoutForm() {
             <EditFormContainer
                 legendText="Layout"
                 isOpenInitial={"open"}>
-                
-                <div 
+
+                <div
                     className="layout-form-btns-container cv-editor-label-input-container"
                     data-layout={cvHeader}
-                    >
+                >
                     <div className="layout-form-title-btn-container">
                         <button disabled={cvHeader === "Top"} type="button" className="layout-form-btn" onClick={(e) => {
                             setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Top" }))
@@ -435,7 +498,7 @@ export function LayoutForm() {
                     </div>
                     <div className="layout-form-title-btn-container">
                         <button disabled={cvHeader === "Right"} type="button" className="layout-form-btn" onClick={(e) => {
-                        setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Right" }))
+                            setLayout((prev: ILayoutData) => ({ ...prev, cvHeader: "Right" }))
                         }}></button>
                         <p className="layout-form-title">Right</p>
                     </div>
@@ -447,21 +510,21 @@ export function LayoutForm() {
             <EditFormContainer
                 legendText="Color Scheme"
                 isOpenInitial={"open"}
-                >
-                
-                <div 
+            >
+
+                <div
                     className="color-scheme-btns-container cv-editor-label-input-container"
-                    >
-                    <CVInputContainerMemo 
-                        label="Primary Color" 
-                        name="primary-color" 
+                >
+                    <CVInputContainerMemo
+                        label="Primary Color"
+                        name="primary-color"
                         id="primary-color"
                         type="color"
                         value={headerColour}>
                         <input onChange={(e) => {
                             setLayout((prev: ILayoutData) => ({ ...prev, headerColour: e.target.value as ILayoutData["headerColour"] }))
-                        }} /> 
-                    </CVInputContainerMemo> 
+                        }} />
+                    </CVInputContainerMemo>
                 </div>
 
             </EditFormContainer>
@@ -470,13 +533,13 @@ export function LayoutForm() {
             <EditFormContainer
                 legendText="Font Style"
                 isOpenInitial={"open"}
-                >
-                
-                <div 
+            >
+
+                <div
                     className="font-style-btns-container cv-editor-label-input-container"
                     data-font-style={font}
-                    >
-                    
+                >
+
                     <button disabled={font === "Arial"} type="button" className="font-style-btn arial-font" onClick={(e) => {
                         setLayout((prev: ILayoutData) => ({ ...prev, font: "Arial" }))
                     }}>

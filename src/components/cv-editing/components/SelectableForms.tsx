@@ -6,21 +6,46 @@
 // import { FormUtilBtns } from "./FormUtilBtns";
 // import { IFormTogglable } from "../../../models/Collapsable";
 
-// type ISelectableFormsProps = {
-//     // Add props if needed
+
+
+// import { ZodObject, ZodRawShape, ZodString } from "zod";
+// import { dateRangeSchema } from "../../../models/DateRange";
+
+// type SchemaWithIdAndDates = ZodObject<
+//   ZodRawShape & {
+//     id: ZodString;
+//     dates: typeof dateRangeSchema;
+//   }
+// >;
+
+
+
+
+// type ISelectableFormsProps<T extends IWorkExperience | IEducation, K extends ZodObject<any>> = {
 //     formLegend: string;
 //     isOpenInitial: IFormTogglable;
+//     formInputNames: Record<keyof Omit<T, "id" | "dates">, string>;
+//     schema: K & SchemaWithIdAndDates;
+
+//     experienceArray: T[];
 // };
 
-// export function SelectableForms<T extends IWorkExperience | IEducation>({
+// export function SelectableForms<T extends IWorkExperience | IEducation, K extends ZodObject<any>>({ //We can look to be more specific on the any type here
 //     formLegend,
-//     isOpenInitial
-// }: ISelectableFormsProps) {
+//     isOpenInitial,
+//     formInputNames,
+//     schema,
 
-//     const [selectIsOpen, setSelectIsOpen] = useState<{ isOpen: IFormTogglable; payload: Omit<T, "id"> & { saveFunction: (formData: T) => void } | null; }>({
+//     experienceArray,
+// }: ISelectableFormsProps<T, K>) {
+//     type IFormInputNames = typeof formInputNames;
+
+//     const [selectIsOpen, setSelectIsOpen] = useState<{ isOpen: IFormTogglable; payload: Omit<T, "id"> & { saveFunction: (formData: Omit<T, "id">) => void } | null; }>({
 //         isOpen: "closed",
 //         payload: null
 //     });
+
+//     const isOpen = selectIsOpen.isOpen;
 
 //     return (
 //         <EditFormContainer
@@ -31,29 +56,45 @@
 
 //                 const formData = new FormData(e.currentTarget);
 
-
-                
 //                 const startDateValue = formData.get("startDate");
 //                 const endDateValue = formData.get("endDate");
 
-//                 const formObj: Partial<IEducation> = {
-//                     institution: formData.get("institution")?.toString() ?? "",
-//                     degree: formData.get("degree")?.toString() ?? "",
-//                     dates: {
-//                         startDate: typeof startDateValue === "string"
-//                             ? new Date(startDateValue)
-//                             : new Date("2020-01-01"),
-//                         endDate: typeof endDateValue === "string"
-//                             ? new Date(endDateValue)
-//                             : "Present"
-//                     }
+//                 const formObj: Partial<T> = {};
+
+//                 for (const key of Object.keys(formInputNames) as Array<keyof IFormInputNames>) {
+//                     const typedKey = key;
+//                     const inputName = formInputNames[typedKey];
+//                     formObj[typedKey] = (formData.get(inputName)?.toString() ?? "") as T[typeof typedKey];
+//                 }
+
+//                 formObj["dates"] = {
+//                     startDate: typeof startDateValue === "string"
+//                         ? new Date(startDateValue)
+//                         : new Date("2020-01-01"),
+//                     endDate: typeof endDateValue === "string"
+//                         ? new Date(endDateValue)
+//                         : new Date("2025-01-01")
 //                 };
 
-//                 const educationSchemaWithoutId = educationSchema.omit({ id: true });
+//                 // const formObj: Partial<IEducation> = {
+//                 //     institution: formData.get("institution")?.toString() ?? "",
+//                 //     degree: formData.get("degree")?.toString() ?? "",
+//                 //     dates: {
+//                 //         startDate: typeof startDateValue === "string"
+//                 //             ? new Date(startDateValue)
+//                 //             : new Date("2020-01-01"),
+//                 //         endDate: typeof endDateValue === "string"
+//                 //             ? new Date(endDateValue)
+//                 //             : "Present"
+//                 //     }
+//                 // };
 
-//                 if (educationSchemaWithoutId.safeParse(formObj).success) {
-//                     handleFormCurr.payload?.saveFunction(formObj as IEducation);
-//                     setFormState({
+//                 const schemaWithoutId = schema.omit({ id: true });
+
+//                 if (schemaWithoutId.safeParse(formObj).success) {
+
+//                     selectIsOpen.payload?.saveFunction(formObj as Omit<T, "id">);
+//                     setSelectIsOpen({
 //                         isOpen: "closed",
 //                         payload: null
 //                     });
@@ -63,11 +104,11 @@
 //                 }
 
 //             }}>
-
-//             {isOpen === "closed" || handleFormCurr.payload === null ?
-//                 <>
-//                     <div className="experience-selection-entries education-entries">
-//                         {educationSummary.map((edu: IEducation) => (
+                
+//             {isOpen === "closed" || selectIsOpen.payload === null ?
+//                 <> 
+//                     <div className="experience-selection-entries"> {/* education-entries */}
+//                         {experienceArray.map((edu: T) => (
 //                             <React.Fragment key={edu.id}>
 
 //                                 <ExperienceSelectBtn
@@ -109,6 +150,8 @@
 //                     <AddExperienceBtn
 //                         experience="Education"
 //                         onclick={() => {
+
+
 //                             setFormState({
 //                                 isOpen: "open",
 //                                 payload: {
@@ -116,9 +159,9 @@
 //                                     degree: "",
 //                                     dates: {
 //                                         startDate: new Date("01/01/2020"),
-//                                         endDate: "Present"
+//                                         endDate: new Date("01/01/2025")
 //                                     },
-//                                     saveFunction: (data: IEducation) => {
+//                                     saveFunction: (data: T) => {
 //                                         // Here we want to add the new education entry to the state
 //                                         setState((prev: IFormData) => ({
 //                                             ...prev,
@@ -126,7 +169,7 @@
 //                                                 id: crypto.randomUUID(),
 //                                                 institution: data.institution ?? "",
 //                                                 degree: data.degree ?? "",
-//                                                 dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: "Present" }
+//                                                 dates: data.dates ?? { startDate: new Date("01/01/2020"), endDate: new Date("01/01/2025") }
 //                                             }]
 //                                         }));
 //                                     }
@@ -142,11 +185,13 @@
 //                             degree={handleFormCurr.payload?.degree}
 //                             institution={handleFormCurr.payload?.institution}
 //                             dates={handleFormCurr.payload?.dates} />
+                        
+                        
 //                         <FormUtilBtns
 //                             onCancelClick={(e) => {
 //                                 e.preventDefault();
 
-//                                 setFormState({
+//                                 setSelectIsOpen({
 //                                     isOpen: "closed",
 //                                     payload: null
 //                                 });

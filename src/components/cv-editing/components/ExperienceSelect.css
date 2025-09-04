@@ -1,3 +1,11 @@
+span.error-message{
+    color: rgb(255, 0, 0);
+
+    font-weight: bold;
+
+    font-size: large;
+}
+
 
 form.cv-editor-form:has(div.experience-selection-entries){
 

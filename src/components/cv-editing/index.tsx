@@ -156,7 +156,7 @@ export function PersonalInfoForm() {
                 legendText="Education"
                 isOpenInitial={"closed"}
                 onSubmit={handleSubmitEducation((data) => {
-                    console.log(data.dates);
+                    // console.log(data.dates);
                     handleFormCurr.payload?.saveFunction(data);
                     setFormState({
                         isOpen: "closed",

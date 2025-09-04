@@ -71,6 +71,45 @@ export function EducationExperienceForm({
                 errors={errors}
                 {...dates} />
 
+
+
+
+
+
+
+            {/* <div className="input-date-container">
+
+                <CVInputContainer
+                    label="Start Date"
+                    type="date"
+                    id={"education-start-date"}
+                    name="startDate"
+                >
+                    <input {...register("dates.startDate", { valueAsDate: true })} />
+                </CVInputContainer>
+
+                <CVInputContainer
+                    label="End Date"
+                    type="date"
+                    id={"education-end-date"}
+                    name="endDate">
+                    <input {...register("dates.endDate", { valueAsDate: true })} />
+                </CVInputContainer>
+                {errors.dates?.startDate && <span className="error-message">{errors.dates.startDate.message}</span>}
+                {errors.dates?.endDate && <span className="error-message">{errors.dates.endDate.message}</span>}
+
+
+            </div> */}
+
+
+
+
+
+
+
+
+
+
         </div>
     );
 }
@@ -123,6 +162,44 @@ export function WorkExperienceForm({
                 register={register}
                 errors={errors}
                 {...dates} />
+
+
+
+
+
+
+            {/* <div className="input-date-container">
+
+                <CVInputContainer
+                    label="Start Date"
+                    type="date"
+                    id={"work-start-date"}
+                    name="startDate"
+                >
+                    <input {...register("dates.startDate", { valueAsDate: true })} />
+                </CVInputContainer>
+
+                <CVInputContainer
+                    label="End Date"
+                    type="date"
+                    id={"work-end-date"}
+                    name="endDate">
+                    <input {...register("dates.endDate", { valueAsDate: true })} />
+                </CVInputContainer>
+                {errors.dates?.startDate && <span className="error-message">{errors.dates.startDate.message}</span>}
+                {errors.dates?.endDate && <span className="error-message">{errors.dates.endDate.message}</span>}
+
+
+            </div> */}
+
+
+
+
+
+
+
+
+
         </div>
     );
 }
@@ -135,30 +212,31 @@ function DateFormInputs<T extends { dates: IDateRange }>({
     errors,
     ...dates
 }: IDateRange & { startDateID: string; endDateID: string; } & { register: UseFormRegister<T>, errors: FieldErrors<IDateRange> }) {
-    
+
 
 
     return (
         <div className="input-date-container">
 
-            <CVInputContainer
-                label="Start Date"
-                type="date"
-                id={startDateID}
-                name="startDate"
-            >
-                <input {...register("dates.startDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.startDate.toISOString().split("T")[0]} />
-            </CVInputContainer>
 
-            <CVInputContainer
-                label="End Date"
-                type="date"
-                id={endDateID}
-                name="endDate">
-                <input {...register("dates.endDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.endDate === "Present" ? (new Date()).toISOString().split("T")[0] : dates.endDate.toISOString().split("T")[0]} />
-            </CVInputContainer>
+            <div className={`cv-editor-label-input-container label-input-container-date`}>
+
+                <label htmlFor={startDateID}>Start Date</label>
+                <input id={startDateID} type="date" {...register("dates.startDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.startDate.toISOString().split("T")[0]} />
+
+            </div>
+
+            <div className={`cv-editor-label-input-container label-input-container-date`}>
+
+                <label htmlFor={endDateID}>End Date</label>
+                <input id={endDateID} type="date" {...register("dates.endDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.endDate === "Present" ? (new Date()).toISOString().split("T")[0] : dates.endDate.toISOString().split("T")[0]} />
+
+            </div>
+
+
             {errors.startDate && <span className="error-message">{errors.startDate.message}</span>}
             {errors.endDate && <span className="error-message">{errors.endDate.message}</span>}
+
 
 
         </div>

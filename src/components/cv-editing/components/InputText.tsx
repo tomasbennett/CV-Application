@@ -1,6 +1,9 @@
 import React, { HTMLInputTypeAttribute } from "react";
 
+import { useForm, UseFormRegister } from 'react-hook-form'
+
 import "./InputText.css";
+import { IDateRange } from "../../../models/DateRange";
 
 
 export type InputTextProps = {

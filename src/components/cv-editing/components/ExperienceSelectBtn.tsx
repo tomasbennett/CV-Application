@@ -7,7 +7,10 @@ import { CVInputContainer } from "./InputText";
 import { IDateRange } from "../../../models/DateRange";
 
 
-import { FieldErrors, UseFormRegister, Path } from "react-hook-form";
+import { FieldErrors, UseFormRegister, Path, Controller, Control, PathValue } from "react-hook-form";
+
+
+
 
 type IExperienceSelect = {
     btnTitle: string;
@@ -33,13 +36,14 @@ export function ExperienceSelectBtn({
 }
 
 
-export function EducationExperienceForm({
+export function EducationExperienceForm<T extends { dates: IDateRange }>({
     institution,
     degree,
     dates,
+    control,
     register,
     errors
-}: Omit<IEducation, "id"> & { register: UseFormRegister<Omit<IEducation, "id">>, errors: FieldErrors<Omit<IEducation, "id">> }) {
+}: Omit<IEducation, "id"> & { control: Control<T>, register: UseFormRegister<Omit<IEducation, "id">>, errors: FieldErrors<Omit<IEducation, "id">> }) {
 
     return (
         <div className="education-experience-container experience-select-container">
@@ -67,39 +71,9 @@ export function EducationExperienceForm({
             <DateFormInputs
                 startDateID="education-start-date"
                 endDateID="education-end-date"
-                register={register}
-                errors={errors}
+                control={control}
+                errors={errors as FieldErrors<T>}
                 {...dates} />
-
-
-
-
-
-
-
-            {/* <div className="input-date-container">
-
-                <CVInputContainer
-                    label="Start Date"
-                    type="date"
-                    id={"education-start-date"}
-                    name="startDate"
-                >
-                    <input {...register("dates.startDate", { valueAsDate: true })} />
-                </CVInputContainer>
-
-                <CVInputContainer
-                    label="End Date"
-                    type="date"
-                    id={"education-end-date"}
-                    name="endDate">
-                    <input {...register("dates.endDate", { valueAsDate: true })} />
-                </CVInputContainer>
-                {errors.dates?.startDate && <span className="error-message">{errors.dates.startDate.message}</span>}
-                {errors.dates?.endDate && <span className="error-message">{errors.dates.endDate.message}</span>}
-
-
-            </div> */}
 
 
 
@@ -117,14 +91,15 @@ export function EducationExperienceForm({
 
 
 
-export function WorkExperienceForm({
+export function WorkExperienceForm<T extends { dates: IDateRange }>({
     companyName,
     jobTitle,
     jobDescription,
     dates,
+    control,
     register,
     errors
-}: Omit<IWorkExperience, "id"> & { register: UseFormRegister<Omit<IWorkExperience, "id">>, errors: FieldErrors<Omit<IWorkExperience, "id">> }) {
+}: Omit<IWorkExperience, "id"> & { control: Control<T>, register: UseFormRegister<Omit<IWorkExperience, "id">>, errors: FieldErrors<Omit<IWorkExperience, "id">> }) {
     return (
         <div className="work-experience-container">
             <CVInputContainer
@@ -159,38 +134,9 @@ export function WorkExperienceForm({
             <DateFormInputs
                 startDateID="work-start-date"
                 endDateID="work-end-date"
-                register={register}
-                errors={errors}
+                control={control}
+                errors={errors as FieldErrors<T>}
                 {...dates} />
-
-
-
-
-
-
-            {/* <div className="input-date-container">
-
-                <CVInputContainer
-                    label="Start Date"
-                    type="date"
-                    id={"work-start-date"}
-                    name="startDate"
-                >
-                    <input {...register("dates.startDate", { valueAsDate: true })} />
-                </CVInputContainer>
-
-                <CVInputContainer
-                    label="End Date"
-                    type="date"
-                    id={"work-end-date"}
-                    name="endDate">
-                    <input {...register("dates.endDate", { valueAsDate: true })} />
-                </CVInputContainer>
-                {errors.dates?.startDate && <span className="error-message">{errors.dates.startDate.message}</span>}
-                {errors.dates?.endDate && <span className="error-message">{errors.dates.endDate.message}</span>}
-
-
-            </div> */}
 
 
 
@@ -208,37 +154,77 @@ export function WorkExperienceForm({
 function DateFormInputs<T extends { dates: IDateRange }>({
     startDateID,
     endDateID,
-    register,
+    control,
     errors,
     ...dates
-}: IDateRange & { startDateID: string; endDateID: string; } & { register: UseFormRegister<T>, errors: FieldErrors<IDateRange> }) {
+}: IDateRange & { startDateID: string; endDateID: string; } & { control: Control<T>, errors: FieldErrors<T> }) {
 
 
 
     return (
-        <div className="input-date-container">
+        <>
 
 
-            <div className={`cv-editor-label-input-container label-input-container-date`}>
 
-                <label htmlFor={startDateID}>Start Date</label>
-                <input id={startDateID} type="date" {...register("dates.startDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.startDate.toISOString().split("T")[0]} />
+            <div className="input-date-container">
+
+
+                <div className={`cv-editor-label-input-container label-input-container-date`}>
+
+                    <label htmlFor={startDateID}>Start Date</label>
+                    <Controller
+                        control={control}
+                        defaultValue={dates.startDate as PathValue<T, Path<T>>}
+                        name={"dates.startDate" as Path<T>}
+                        render={({ field }) => (
+                            <input
+                                id={startDateID}
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date ? field.value.toISOString().split("T")[0] : ""}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                            />
+                        )}
+                    />
+
+                    {/* <input id={startDateID} type="date" {...register("dates.startDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.startDate.toISOString().split("T")[0]} /> */}
+
+
+
+                </div>
+
+                <div className={`cv-editor-label-input-container label-input-container-date`}>
+
+                    <label htmlFor={endDateID}>End Date</label>
+                    <Controller
+                        control={control}
+                        defaultValue={dates.endDate as PathValue<T, Path<T>>}
+                        name={"dates.endDate" as Path<T>}
+                        render={({ field }) => (
+                            <input
+                                id={endDateID}
+                                type="date"
+                                {...field}
+                                value={field.value === "Present" ? (new Date()).toISOString().split("T")[0] : field.value instanceof Date ? field.value.toISOString().split("T")[0] : ""}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                            />
+                        )}
+                    />
+
+
+                    {/* <input id={endDateID} type="date" {...register("dates.endDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.endDate === "Present" ? (new Date()).toISOString().split("T")[0] : dates.endDate.toISOString().split("T")[0]} /> */}
+
+                </div>
+
+
+
+
 
             </div>
-
-            <div className={`cv-editor-label-input-container label-input-container-date`}>
-
-                <label htmlFor={endDateID}>End Date</label>
-                <input id={endDateID} type="date" {...register("dates.endDate" as Path<T>, { valueAsDate: true })} defaultValue={dates.endDate === "Present" ? (new Date()).toISOString().split("T")[0] : dates.endDate.toISOString().split("T")[0]} />
-
-            </div>
+            {(errors.dates as FieldErrors<IDateRange>)?.startDate && <p className="error-message">{(errors.dates as FieldErrors<IDateRange>).startDate?.message}</p>}
+            {(errors.dates as FieldErrors<IDateRange>)?.endDate && <p className="error-message">{(errors.dates as FieldErrors<IDateRange>).endDate?.message}</p>}
+        </>
 
 
-            {errors.startDate && <span className="error-message">{errors.startDate.message}</span>}
-            {errors.endDate && <span className="error-message">{errors.endDate.message}</span>}
-
-
-
-        </div>
     );
 }

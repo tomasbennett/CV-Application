@@ -99,10 +99,11 @@ export function PersonalInfoForm() {
     const isWorkOpen = handleWorkFormCurr.isOpen;
 
     const {
+        reset: resetEducationForm,
+        control: controlEducation,
         register: registerEducation,
         handleSubmit: handleSubmitEducation,
-        formState: { errors: educationErrors },
-        control
+        formState: { errors: educationErrors }
     } = useForm<Omit<IEducation, "id">>(
         {
             resolver: zodResolver(educationSchema.omit({ id: true })),
@@ -112,6 +113,8 @@ export function PersonalInfoForm() {
     );
     
     const {
+        reset: resetWorkForm,
+        control: controlWork,
         register: registerWork,
         handleSubmit: handleSubmitWork,
         formState: { errors: workErrors }
@@ -127,6 +130,7 @@ export function PersonalInfoForm() {
     return (
         <div className="edit-form-personal-details-container">
             <EditFormContainer legendText="Personal Details" isOpenInitial={"open"}>
+                
                 <CVInputContainerMemo value={personalInfo.fullName} placeholder={"Full Name..."} type={"text"} id={"full-name"} name={"full-name"} label={"Full Name"} >
                     <input onChange={(e) => setState((prev: IFormData) => ({ ...prev, personalDetails: { ...prev.personalDetails, fullName: e.target.value } }))} />
                 </CVInputContainerMemo>
@@ -142,6 +146,7 @@ export function PersonalInfoForm() {
                 <CVInputContainerMemo value={personalInfo.address} placeholder={"Home Address..."} type={"text"} id={"address"} name={"address"} label={"Address"} >
                     <input onChange={(e) => setState((prev: IFormData) => ({ ...prev, personalDetails: { ...prev.personalDetails, address: e.target.value } }))} />
                 </CVInputContainerMemo>
+
             </EditFormContainer>
 
             <EditFormContainer legendText="Profile Summary" isOpenInitial={"open"}>
@@ -163,41 +168,6 @@ export function PersonalInfoForm() {
                         payload: null
                     });
                 }, (err) => { console.log(err); })}
-                // onSubmit={(e) => {
-                //     e.preventDefault();
-
-                //     const formData = new FormData(e.currentTarget);
-
-                //     const startDateValue = formData.get("startDate");
-                //     const endDateValue = formData.get("endDate");
-
-                //     const formObj: Partial<IEducation> = {
-                //         institution: formData.get("institution")?.toString() ?? "",
-                //         degree: formData.get("degree")?.toString() ?? "",
-                //         dates: {
-                //             startDate: typeof startDateValue === "string"
-                //                 ? new Date(startDateValue)
-                //                 : new Date("2020-01-01"),
-                //             endDate: typeof endDateValue === "string"
-                //                 ? new Date(endDateValue)
-                //                 : "Present"
-                //         }
-                //     };
-
-                //     const educationSchemaWithoutId = educationSchema.omit({ id: true });
-
-                //     if (educationSchemaWithoutId.safeParse(formObj).success) {
-                //         handleFormCurr.payload?.saveFunction(formObj as IEducation);
-                //         setFormState({
-                //             isOpen: "closed",
-                //             payload: null
-                //         });
-
-                //         return;
-
-                //     }
-
-                // }}
                 >
 
                 {isOpen === "closed" || handleFormCurr.payload === null ?
@@ -227,6 +197,13 @@ export function PersonalInfoForm() {
 
                                                 }
                                             });
+
+                                            resetEducationForm({
+                                                institution: edu.institution,
+                                                degree: edu.degree,
+                                                dates: edu.dates
+                                            });
+
                                         }}
                                         delClick={(e) => {
                                             e.stopPropagation();
@@ -268,6 +245,16 @@ export function PersonalInfoForm() {
                                         }
                                     }
                                 });
+
+                                resetEducationForm({
+                                    institution: "",
+                                    degree: "",
+                                    dates: {
+                                        startDate: new Date("01/01/2020"),
+                                        endDate: "Present"
+                                    }
+                                });
+
                             }}
                         />
                     </>
@@ -275,6 +262,7 @@ export function PersonalInfoForm() {
                     <>
                         <div className="full-selectable-form-container">
                             <EducationExperienceForm
+                                control={controlEducation}
                                 degree={handleFormCurr.payload?.degree}
                                 institution={handleFormCurr.payload?.institution}
                                 dates={handleFormCurr.payload?.dates}
@@ -297,7 +285,7 @@ export function PersonalInfoForm() {
 
             </EditFormContainer>
 
-            <DevTool control={control} />
+            {/* <DevTool control={control} /> */}
 
             <EditFormContainer
                 legendText="Work Experience"
@@ -309,42 +297,6 @@ export function PersonalInfoForm() {
                         payload: null
                     });
                 })}
-                // onSubmit={(e) => {
-                //     e.preventDefault();
-
-                //     const formData = new FormData(e.currentTarget);
-
-                //     const startDateValue = formData.get("startDate");
-                //     const endDateValue = formData.get("endDate");
-
-                //     const formObj: Partial<IWorkExperience> = {
-                //         companyName: formData.get("company-name")?.toString() ?? "",
-                //         jobTitle: formData.get("job-title")?.toString() ?? "",
-                //         jobDescription: formData.get("job-description")?.toString() ?? "",
-
-                //         dates: {
-                //             startDate: typeof startDateValue === "string"
-                //                 ? new Date(startDateValue)
-                //                 : new Date("2020-01-01"),
-                //             endDate: typeof endDateValue === "string"
-                //                 ? new Date(endDateValue)
-                //                 : "Present"
-                //         }
-                //     };
-
-                //     const workSchemaWithoutId = workExperienceSchema.omit({ id: true });
-
-                //     if (workSchemaWithoutId.safeParse(formObj).success) {
-                //         handleWorkFormCurr.payload?.saveFunction(formObj as IWorkExperience);
-                //         setWorkFormState({
-                //             isOpen: "closed",
-                //             payload: null
-                //         });
-
-                //         return;
-
-                //     }
-                // }}
                 >
 
 
@@ -375,6 +327,13 @@ export function PersonalInfoForm() {
                                                     }
 
                                                 }
+                                            });
+
+                                            resetWorkForm({
+                                                companyName: work.companyName,
+                                                jobTitle: work.jobTitle,
+                                                jobDescription: work.jobDescription,
+                                                dates: work.dates
                                             });
                                         }}
                                         delClick={(e) => {
@@ -420,6 +379,17 @@ export function PersonalInfoForm() {
                                         }
                                     }
                                 })
+
+                                resetWorkForm({
+                                    companyName: "",
+                                    jobDescription: "",
+                                    jobTitle: "",
+                                    dates: {
+                                        startDate: new Date("01/01/2020"),
+                                        endDate: "Present"
+                                    }
+                                });
+
                             }}
                         />
 
@@ -428,6 +398,7 @@ export function PersonalInfoForm() {
                     <>
                         <div className="full-selectable-form-container">
                             <WorkExperienceForm
+                                control={controlWork}
                                 companyName={handleWorkFormCurr.payload?.companyName}
                                 jobTitle={handleWorkFormCurr.payload?.jobTitle}
                                 jobDescription={handleWorkFormCurr.payload?.jobDescription}

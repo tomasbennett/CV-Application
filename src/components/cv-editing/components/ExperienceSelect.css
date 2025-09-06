@@ -1,9 +1,20 @@
-span.error-message{
-    color: rgb(255, 0, 0);
+.error-message{
+    color: rgb(207, 0, 0);
 
-    font-weight: bold;
+    font-weight: 700;
+    font-style: italic;
 
-    font-size: large;
+    /* width: fit-content; */
+
+    font-size: 1.8rem;
+
+    /* padding: .5rem; */
+
+    /* border-radius: 1rem; */
+
+    text-align: start;
+
+    /* background-color: black; */
 }
 
 

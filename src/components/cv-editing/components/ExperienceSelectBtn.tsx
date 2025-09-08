@@ -107,7 +107,7 @@ export function WorkExperienceForm<T extends { dates: IDateRange }>({
                 label="Company Name"
                 type="text"
                 id="company-name"
-                name="company-name">
+                name="companyName">
                 <input {...register("companyName")} defaultValue={companyName} />
             </CVInputContainer>
             {errors.companyName && <span className="error-message">{errors.companyName.message}</span>}
@@ -117,7 +117,7 @@ export function WorkExperienceForm<T extends { dates: IDateRange }>({
                 label="Job Title"
                 type="text"
                 id="job-title"
-                name="job-title">
+                name="jobTitle">
                 <input {...register("jobTitle")} defaultValue={jobTitle} />
             </CVInputContainer>
             {errors.jobTitle && <span className="error-message">{errors.jobTitle.message}</span>}
@@ -126,7 +126,7 @@ export function WorkExperienceForm<T extends { dates: IDateRange }>({
                 placeholder="Please enter the job description"
                 label="Job Description"
                 id="job-description"
-                name="job-description">
+                name="jobDescription">
                 <textarea {...register("jobDescription")} defaultValue={jobDescription} />
             </CVInputContainer>
             {errors.jobDescription && <span className="error-message">{errors.jobDescription.message}</span>}

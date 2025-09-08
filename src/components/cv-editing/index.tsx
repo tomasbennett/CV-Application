@@ -126,6 +126,7 @@ export function PersonalInfoForm() {
         }
     );
 
+    
 
     return (
         <div className="edit-form-personal-details-container">
@@ -291,7 +292,10 @@ export function PersonalInfoForm() {
                 legendText="Work Experience"
                 isOpenInitial={"closed"}
                 onSubmit={handleSubmitWork((data) => {
+
+
                     handleWorkFormCurr.payload?.saveFunction(data);
+                    
                     setWorkFormState({
                         isOpen: "closed",
                         payload: null
